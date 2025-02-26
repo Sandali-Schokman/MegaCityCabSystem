@@ -1,0 +1,56 @@
+package dao;
+
+import config.DatabaseConnection;
+import dto.UserDTO;
+import models.User;
+import java.sql.*;
+
+public class UserDAO {
+    public boolean registerUser(User user) {
+        String query = "INSERT INTO users (username, password, email, full_name, phone, address, role, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, NOW())";
+
+        try (Connection conn = DatabaseConnection.getInstance().getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+
+            stmt.setString(1, user.getUsername());
+            stmt.setString(2, user.getPassword()); // Hash before passing
+            stmt.setString(3, user.getEmail());
+            stmt.setString(4, user.getFullName());
+            stmt.setString(5, user.getPhone());
+            stmt.setString(6, user.getAddress());
+            stmt.setString(7, user.getRole()); // Role will be assigned internally
+
+            return stmt.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public UserDTO getUserByUsername(String username) {
+        String query = "SELECT * FROM users WHERE username = ?";
+        try (Connection conn = DatabaseConnection.getInstance().getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+
+            stmt.setString(1, username);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return new UserDTO(
+                        rs.getInt("user_id"),
+                        rs.getString("username"),
+                        rs.getString("password"), // Hashed password
+                        rs.getString("email"),
+                        rs.getString("full_name"),
+                        rs.getString("phone"),
+                        rs.getString("address"),
+                        rs.getString("role"),
+                        rs.getTimestamp("created_at")
+                );
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+}
+
