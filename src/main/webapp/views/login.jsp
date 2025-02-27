@@ -32,7 +32,7 @@
                 <%= request.getParameter("error") %>
                 <% } %>
             </p>
-            <p><a href="#">Forgot Password?</a></p>
+            <p><a href="<%= request.getContextPath() %>/views/forgot-password.jsp">Forgot Password?</a></p>
         </form>
     </div>
 </div>
