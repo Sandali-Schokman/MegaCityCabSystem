@@ -9,6 +9,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.UUID;
 
 @WebServlet("/forgotPassword")
 public class ForgotPasswordServlet extends HttpServlet {
@@ -22,13 +23,16 @@ public class ForgotPasswordServlet extends HttpServlet {
             return;
         }
 
-        // Generate a temporary password
-        String tempPassword = userService.resetPassword(email);
 
-        if (tempPassword != null) {
-            // Send email with temporary password
-            EmailUtility.sendEmail(email, "Password Reset", "Your temporary password is: " + tempPassword);
-            response.sendRedirect(request.getContextPath() + "/views/login.jsp?message=Check your email for the new password.");
+        // Generate a reset token
+        String token = UUID.randomUUID().toString();
+        boolean tokenSaved = userService.savePasswordResetToken(email, token);
+
+        if (tokenSaved) {
+            // Send email with password reset link
+            String resetLink = request.getRequestURL().toString().replace("forgotPassword", "views/reset-password.jsp?token=" + token);
+            EmailUtility.sendEmail(email, "Password Reset", "Click the link to reset your password: " + resetLink);
+            response.sendRedirect(request.getContextPath() + "/views/login.jsp?message=Check your email for the reset link.");
         } else {
             response.sendRedirect(request.getContextPath() + "/views/forgot-password.jsp?message=Email not found.");
         }

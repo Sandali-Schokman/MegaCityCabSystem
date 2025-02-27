@@ -82,5 +82,49 @@ public class UserDAO {
         }
         return false;
     }
+
+    // Store password reset token in database
+    public boolean storePasswordResetToken(String email, String token, Timestamp expiration) {
+        String query = "UPDATE users SET reset_token = ?, token_expiry = ? WHERE email = ?";
+        try (Connection conn = DatabaseConnection.getInstance().getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setString(1, token);
+            stmt.setTimestamp(2, expiration);
+            stmt.setString(3, email);
+            return stmt.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    // Update password using reset token
+    public boolean updatePasswordUsingToken(String token, String hashedPassword) {
+        String query = "UPDATE users SET password = ?, reset_token = NULL, token_expiry = NULL WHERE reset_token = ? AND token_expiry > NOW()";
+        try (Connection conn = DatabaseConnection.getInstance().getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setString(1, hashedPassword);
+            stmt.setString(2, token);
+            return stmt.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    // Validate reset token
+    public boolean isValidResetToken(String token) {
+        String query = "SELECT COUNT(*) FROM users WHERE reset_token = ? AND token_expiry > NOW()";
+        try (Connection conn = DatabaseConnection.getInstance().getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setString(1, token);
+            ResultSet rs = stmt.executeQuery();
+            return rs.next() && rs.getInt(1) > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
 }
 

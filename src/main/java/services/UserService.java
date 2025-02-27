@@ -4,6 +4,10 @@ import dao.UserDAO;
 import dto.UserDTO;
 import utils.HashUtil;
 
+import java.sql.Timestamp;
+import java.util.UUID;
+
+
 public class UserService {
     private final UserDAO userDAO = new UserDAO();
 
@@ -28,5 +32,20 @@ public class UserService {
         // Update the password in the database
         boolean success = userDAO.updatePassword(email, hashedPassword);
         return success ? tempPassword : null;
+    }
+
+    // Save reset token in database
+    public boolean savePasswordResetToken(String email, String token) {
+        Timestamp expirationTime = new Timestamp(System.currentTimeMillis() + (15 * 60 * 1000)); // 15 minutes expiration
+        return userDAO.storePasswordResetToken(email, token, expirationTime);
+    }
+
+    // Reset password using token
+    public boolean resetPasswordWithToken(String token, String hashedPassword) {
+        return userDAO.updatePasswordUsingToken(token, hashedPassword);
+    }
+
+    public boolean isValidResetToken(String token){
+        return userDAO.isValidResetToken(token);
     }
 }
