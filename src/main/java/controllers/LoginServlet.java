@@ -24,10 +24,18 @@ public class LoginServlet extends HttpServlet {
         UserDTO user = userService.authenticateUser(username, password);
 
         if (user != null) {
-            HttpSession session = request.getSession();
+            // Invalidate old session and create a new one
+            HttpSession oldSession = request.getSession(false);
+            if (oldSession != null) {
+                oldSession.invalidate();
+            }
+
+            HttpSession session = request.getSession(true);
             session.setAttribute("user", user);
             session.setAttribute("role", user.getRole());
+            session.setMaxInactiveInterval(1800); // Auto logout after 30 mins
 
+            // Redirect based on role
             switch (user.getRole()) {
                 case "ADMIN":
                     response.sendRedirect(request.getContextPath() + "/views/dashboards/admin-dashboard.jsp");

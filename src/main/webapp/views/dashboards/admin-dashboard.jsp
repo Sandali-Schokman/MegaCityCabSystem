@@ -7,16 +7,18 @@
 --%>
 
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" language="java" %>
-<%@ page import="jakarta.servlet.http.HttpSession" %>
-<%
-    HttpSession sessionObj = request.getSession(false);
-    String role = (String) sessionObj.getAttribute("role");
+<%@ page import="utils.SessionUtils" %>
 
-    if (role == null) {
-        response.sendRedirect("../login.jsp");
+<jsp:include page="../session-check.jsp"/>
+
+<%
+    String role = SessionUtils.getUserRole(request);
+    if (!"ADMIN".equals(role)) {
+        response.sendRedirect("../unauthorized.jsp");
         return;
     }
 %>
+
 
 <html>
 <head>
@@ -24,12 +26,6 @@
 </head>
 <body>
 <%@ include file="dashboard-header.jsp" %>
-<%
-    if (!role.equals("ADMIN")) {
-        response.sendRedirect("../unauthorized.jsp");
-        return;
-    }
-%>
 <div class="dashboard">
     <h2>Admin Dashboard</h2>
     <p>Manage users, view reports, and oversee the system.</p>

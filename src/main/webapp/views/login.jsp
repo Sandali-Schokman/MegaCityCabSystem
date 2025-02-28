@@ -27,11 +27,15 @@
                 <span class="toggle-password" onclick="togglePassword()">👁️</span>
             </div>
             <button type="submit">Login</button>
-            <p class="error-msg">
-                <% if (request.getParameter("error") != null) { %>
-                <%= request.getParameter("error") %>
-                <% } %>
-            </p>
+            <%-- Display error message --%>
+            <% String errorMessage = (String) session.getAttribute("error");
+                if (errorMessage != null) { %>
+            <p class="error-msg"><%= errorMessage %></p>
+            <%
+                    session.removeAttribute("error"); // Clear message after displaying
+                }
+            %>
+
             <p><a href="<%= request.getContextPath() %>/views/forgot-password.jsp">Forgot Password?</a></p>
         </form>
     </div>

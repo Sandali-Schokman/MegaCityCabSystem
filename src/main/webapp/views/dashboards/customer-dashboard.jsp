@@ -7,13 +7,14 @@
 --%>
 
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" language="java" %>
-<%@ page import="jakarta.servlet.http.HttpSession" %>
-<%
-    HttpSession sessionObj = request.getSession(false);
-    String role = (String) sessionObj.getAttribute("role");
+<%@ page import="utils.SessionUtils" %>
 
-    if (role == null) {
-        response.sendRedirect("../login.jsp");
+<jsp:include page="../session-check.jsp"/>
+
+<%
+    String role = SessionUtils.getUserRole(request);
+    if (!"CUSTOMER".equals(role)) {
+        response.sendRedirect("../unauthorized.jsp");
         return;
     }
 %>
@@ -25,12 +26,7 @@
 <body>
 
 <%@ include file="dashboard-header.jsp" %>
-<%
-    if (!role.equals("CUSTOMER")) {
-        response.sendRedirect("../unauthorized.jsp");
-        return;
-    }
-%>
+
 <div class="dashboard">
     <h2>Customer Dashboard</h2>
     <p>Book rides, view history, and manage payments.</p>
