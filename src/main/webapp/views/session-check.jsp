@@ -9,7 +9,7 @@
 <%@ page import="utils.SessionUtils" %>
 
 <%
-    if (!SessionUtils.isUserLoggedIn(request)) {
+    if (SessionUtils.isUserLoggedIn(request)) {
         response.sendRedirect(request.getContextPath() + "/views/login.jsp?error=Please log in first.");
         return;
     }

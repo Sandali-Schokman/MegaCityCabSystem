@@ -30,7 +30,7 @@
     <p>Manage bookings, assign drivers, and resolve complaints.</p>
 
     <div class="dashboard-options">
-        <a href="#">Assign Drivers</a>
+        <a href="<%= request.getContextPath() %>/views/admin/manual-driver-assignment.jsp">Assign Drivers</a>
         <a href="#">Handle Complaints</a>
         <a href="#">Verify Payments</a>
     </div>

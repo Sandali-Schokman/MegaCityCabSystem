@@ -93,4 +93,53 @@ public class BookingDAO {
         }
         return 50.00; // Default per-km rate if not found
     }
+
+    // Get pending bookings (bookings without assigned drivers)
+    public List<BookingDTO> getPendingBookings() {
+        List<BookingDTO> pendingBookings = new ArrayList<>();
+        String query = "SELECT * FROM bookings WHERE driver_id IS NULL AND booking_status = 'PENDING'";
+
+        try (Connection conn = DatabaseConnection.getInstance().getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query);
+             ResultSet rs = stmt.executeQuery()) {
+
+            while (rs.next()) {
+                Booking booking = new Booking(
+                        rs.getInt("booking_id"),
+                        rs.getInt("customer_id"),
+                        rs.getInt("driver_id"),
+                        rs.getString("pickup_location"),
+                        rs.getString("dropoff_location"),
+                        rs.getTimestamp("scheduled_time"),
+                        rs.getString("booking_status"),
+                        rs.getDouble("fare"),
+                        rs.getString("payment_status"),
+                        rs.getTimestamp("assigned_time"),
+                        rs.getTimestamp("completion_time")
+                );
+                pendingBookings.add(BookingMapper.toDTO(booking));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return pendingBookings;
+    }
+
+    // Assign a driver to a booking manually
+    public boolean assignDriverToBooking(int bookingId, int driverId, int assignedBy) {
+        String query = "UPDATE bookings SET driver_id = ?, booking_status = 'CONFIRMED', assigned_by = 'MANAGER', assigned_by_user = ?, assigned_time = NOW() WHERE booking_id = ?";
+
+        try (Connection conn = DatabaseConnection.getInstance().getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+
+            stmt.setInt(1, driverId);
+            stmt.setInt(2, assignedBy);
+            stmt.setInt(3, bookingId);
+
+            return stmt.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 }

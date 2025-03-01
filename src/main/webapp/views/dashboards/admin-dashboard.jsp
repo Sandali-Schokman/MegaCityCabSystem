@@ -32,6 +32,7 @@
 
     <div class="dashboard-options">
         <a href="#">Manage Users</a>
+        <a href="../admin/manual-driver-assignment.jsp">Assign Drivers</a>
         <a href="#">View Reports</a>
         <a href="#">System Logs</a>
     </div>

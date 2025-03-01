@@ -20,7 +20,7 @@ public class BookingServlet extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession(false);
-        if (!SessionUtils.isUserLoggedIn(request) || !"CUSTOMER".equals(session.getAttribute("role"))) {
+        if (SessionUtils.isUserLoggedIn(request) || !"CUSTOMER".equals(session.getAttribute("role"))) {
             response.sendRedirect(request.getContextPath() + "/views/login.jsp?error=Unauthorized access.");
             return;
         }

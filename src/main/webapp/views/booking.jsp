@@ -9,7 +9,7 @@
 <%@ page import="utils.SessionUtils" %>
 
 <%
-    if (!SessionUtils.isUserLoggedIn(request) || !"CUSTOMER".equals(session.getAttribute("role"))) {
+    if (SessionUtils.isUserLoggedIn(request) || !"CUSTOMER".equals(session.getAttribute("role"))) {
         response.sendRedirect(request.getContextPath() + "/views/login.jsp?error=Unauthorized access.");
         return;
     }
