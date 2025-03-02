@@ -15,13 +15,13 @@
 <body>
 <div class="navbar">
     <a href="#">Home</a>
-    <% if (role.equals("admin")) { %>
+    <% if (role.equals("ADMIN")) { %>
     <a href="admin-dashboard.jsp">Admin Panel</a>
-    <% } else if (role.equals("operator")) { %>
+    <% } else if (role.equals("MANAGER")) { %>
     <a href="operator-dashboard.jsp">Operator Panel</a>
-    <% } else if (role.equals("driver")) { %>
+    <% } else if (role.equals("DRIVER")) { %>
     <a href="driver-dashboard.jsp">Driver Panel</a>
-    <% } else if (role.equals("customer")) { %>
+    <% } else if (role.equals("CUSTOMER")) { %>
     <a href="customer-dashboard.jsp">Customer Panel</a>
     <% } %>
     <a href="profile.jsp">Profile</a>

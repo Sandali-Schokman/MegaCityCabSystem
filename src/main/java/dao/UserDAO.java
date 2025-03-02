@@ -126,5 +126,32 @@ public class UserDAO {
         }
     }
 
+    public int registerDriver(UserDTO user) {
+        String query = "INSERT INTO users (username, password, email, full_name, phone, address, role, created_at) VALUES (?, ?, ?, ?, ?, ?, 'DRIVER', NOW())";
+
+        try (Connection conn = DatabaseConnection.getInstance().getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
+
+            stmt.setString(1, user.getUsername());
+            stmt.setString(2, user.getPassword());
+            stmt.setString(3, user.getEmail());
+            stmt.setString(4, user.getFullName());
+            stmt.setString(5, user.getPhone());
+            stmt.setString(6, user.getAddress());
+
+            int affectedRows = stmt.executeUpdate();
+            if (affectedRows > 0) {
+                ResultSet rs = stmt.getGeneratedKeys();
+                if (rs.next()) {
+                    return rs.getInt(1); // Return generated user ID
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return -1;
+    }
+
+
 }
 

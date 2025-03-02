@@ -33,6 +33,7 @@
         <a href="#">View Assigned Rides</a>
         <a href="#">Update Availability</a>
         <a href="#">Check Earnings</a>
+        <a href="<%= request.getContextPath() %>/earnings">View Earnings</a>
     </div>
 </div>
 <%@ include file="dashboard-footer.jsp" %>
