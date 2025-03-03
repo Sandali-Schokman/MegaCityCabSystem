@@ -1,5 +1,6 @@
 package controllers;
 
+import dto.DriverDTO;
 import services.*;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -8,23 +9,56 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.List;
 
-@WebServlet("/updateAvailability")
+@WebServlet({"/updateAvailability", "/viewDriverAvailability"})
 public class DriverAvailabilityServlet extends HttpServlet {
     private DriverAvailabilityService availabilityService = new DriverAvailabilityService();
     private AdminNotifier adminNotifier = new AdminNotifier(); // Observer Pattern
 
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        HttpSession session = request.getSession(false);
+
+        if (session == null || session.getAttribute("role") == null) {
+            response.sendRedirect(request.getContextPath() + "/views/login.jsp?error=Unauthorized access.");
+            return;
+        }
+
+        String role = (String) session.getAttribute("role");
+
+        // ✅ Only Admin & Manager can access driver availability tracking
+        if (!"ADMIN".equals(role) && !"MANAGER".equals(role)) {
+            response.sendRedirect(request.getContextPath() + "/views/unauthorized.jsp");
+            return;
+        }
+
+        // ✅ Fetch all drivers & their availability
+        List<DriverDTO> drivers = availabilityService.getAllDrivers();
+        request.setAttribute("drivers", drivers);
+
+        // ✅ Forward to respective dashboard
+        if ("ADMIN".equals(role)) {
+            request.getRequestDispatcher("/views/dashboards/admin-dashboard.jsp").forward(request, response);
+        } else {
+            request.getRequestDispatcher("/views/dashboards/operator-dashboard.jsp").forward(request, response);
+        }
+    }
+
+    /**
+     * ✅ Allow Drivers to update their availability
+     */
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession(false);
 
-        // **Fix: Correct session validation**
+
+        //Session validation**
         if (session == null) {
             response.sendRedirect(request.getContextPath() + "/views/login.jsp?error=Session expired. Please log in again.");
             return;
         }
 
 
-        // **Fix: Ensure user_id exists and is an Integer**
+        //Ensure user_id exists and is an Integer**
         Object userIdObj = session.getAttribute("user_id");
         if (userIdObj == null || !(userIdObj instanceof Integer)) {
             response.sendRedirect(request.getContextPath() + "/views/login.jsp?error=Session error. Please log in again.");
@@ -33,7 +67,7 @@ public class DriverAvailabilityServlet extends HttpServlet {
 
         int driverId = (Integer) userIdObj; // Safe type conversion
 
-        // **Fix: Ensure role is set properly**
+        //Ensure role is set properly**
         String role = (String) session.getAttribute("role");
         if (role == null || !role.equals("DRIVER")) {
             response.sendRedirect(request.getContextPath() + "/views/login.jsp?error=Unauthorized access.");

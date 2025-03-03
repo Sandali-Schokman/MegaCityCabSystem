@@ -98,4 +98,29 @@ public class DriverDAO {
         }
         return null;
     }
+
+    // ✅ Fetch all drivers with their availability (for Admin & Manager tracking)
+    public List<DriverDTO> getAllDrivers() {
+        List<DriverDTO> drivers = new ArrayList<>();
+        String query = "SELECT * FROM drivers";
+
+        try (Connection conn = DatabaseConnection.getInstance().getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query);
+             ResultSet rs = stmt.executeQuery()) {
+
+            while (rs.next()) {
+                Driver driver = new Driver(
+                        rs.getInt("driver_id"),
+                        rs.getInt("user_id"),
+                        rs.getInt("car_id"),
+                        rs.getString("availability"),
+                        rs.getDouble("total_earnings")
+                );
+                drivers.add(DriverMapper.toDTO(driver));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return drivers;
+    }
 }
