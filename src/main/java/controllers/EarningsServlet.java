@@ -24,7 +24,6 @@ public class EarningsServlet extends HttpServlet {
 
         String role = (String) session.getAttribute("role");
 
-
         // Ensure only DRIVERS can access
         if (!"DRIVER".equals(role)) {
             response.sendRedirect(request.getContextPath() + "/views/unauthorized.jsp");
@@ -42,6 +41,6 @@ public class EarningsServlet extends HttpServlet {
 
         EarningsDTO earnings = earningsService.getDriverEarnings(driverId);
         request.setAttribute("earnings", earnings);
-        request.getRequestDispatcher("../../views/driver/earnings.jsp").forward(request, response);
+        request.getRequestDispatcher("/views/driver/earnings.jsp").forward(request, response);
     }
 }
