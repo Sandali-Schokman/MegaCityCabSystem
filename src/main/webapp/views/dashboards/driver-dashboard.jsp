@@ -29,12 +29,34 @@
     <h2>Driver Dashboard</h2>
     <p>Manage ride requests, update availability, and track earnings.</p>
 
+    <%-- Display success or error messages --%>
+    <% if (request.getParameter("message") != null) { %>
+    <p class="success-msg"><%= request.getParameter("message") %></p>
+    <% } else if (request.getParameter("error") != null) { %>
+    <p class="error-msg"><%= request.getParameter("error") %></p>
+    <% } %>
+
     <div class="dashboard-options">
         <a href="#">View Assigned Rides</a>
         <a href="#">Update Availability</a>
         <a href="#">Check Earnings</a>
         <a href="<%= request.getContextPath() %>/earnings">View Earnings</a>
     </div>
+
+    <%-- Availability Update Form --%>
+    <div class="availability-form">
+        <h3>Update Availability</h3>
+        <form action="<%= request.getContextPath() %>/updateAvailability" method="POST">
+            <label for="status">Select Status:</label>
+            <select name="status" id="status" required>
+                <option value="AVAILABLE">Available</option>
+                <option value="IN_A_HIRE">In a Hire</option>
+                <option value="OFF">Off Duty</option>
+            </select>
+            <button type="submit">Update</button>
+        </form>
+    </div>
+
 </div>
 <%@ include file="dashboard-footer.jsp" %>
 

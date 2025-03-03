@@ -32,6 +32,7 @@ public class LoginServlet extends HttpServlet {
 
             HttpSession session = request.getSession(true);
             session.setAttribute("user", user);
+            session.setAttribute("user_id", user.getUserId());
             session.setAttribute("role", user.getRole());
             session.setMaxInactiveInterval(1800); // Auto logout after 30 mins
 

@@ -35,12 +35,14 @@ public class DriverDAO {
     }
 
     public boolean updateDriverAvailability(int driverId, String status) {
-        String query = "UPDATE drivers SET availability = ? WHERE driver_id = ?";
+        String query = "UPDATE drivers SET availability = ? WHERE user_id = ?";
 
         try (Connection conn = DatabaseConnection.getInstance().getConnection();
              PreparedStatement stmt = conn.prepareStatement(query)) {
             stmt.setString(1, status);
             stmt.setInt(2, driverId);
+
+            int rowsAffected = stmt.executeUpdate();
 
             return stmt.executeUpdate() > 0;
         } catch (SQLException e) {
