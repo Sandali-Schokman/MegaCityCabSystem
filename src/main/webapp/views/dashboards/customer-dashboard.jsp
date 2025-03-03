@@ -27,13 +27,14 @@
 <html>
 <head>
     <title>customer-dashboard</title>
+    <link rel="stylesheet" href="../../assets/css/dashboard.css">
 </head>
 <body>
 
 <%@ include file="dashboard-header.jsp" %>
 
 <div class="dashboard">
-    <h2>Customer Dashboard</h2>
+    <h1>Customer Dashboard</h1>
     <p>Book rides, view history, and manage payments.</p>
 
     <div class="dashboard-options">
@@ -41,7 +42,7 @@
         <a href="#">Ride History</a>
         <a href="#">Payments</a>
     </div>
-    <h3>Your Booking History</h3>
+    <h2>Your Booking History</h2>
     <table border="1">
         <tr>
             <th>Pickup</th>

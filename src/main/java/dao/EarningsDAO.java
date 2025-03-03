@@ -7,6 +7,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class EarningsDAO {
     private Connection connection;
@@ -53,5 +55,27 @@ public class EarningsDAO {
             e.printStackTrace();
         }
         return false;
+    }
+
+    // Get earnings for all drivers (for admin & manager)
+    public List<EarningsDTO> getAllDriversEarnings() {
+        List<EarningsDTO> earningsList = new ArrayList<>();
+        String query = "SELECT driver_id, total_earnings, completed_rides, last_payment_date FROM drivers";
+
+        try (PreparedStatement stmt = connection.prepareStatement(query);
+             ResultSet rs = stmt.executeQuery()) {
+
+            while (rs.next()) {
+                earningsList.add(new EarningsDTO(
+                        rs.getInt("driver_id"),
+                        rs.getDouble("total_earnings"),
+                        rs.getInt("completed_rides"),
+                        rs.getTimestamp("last_payment_date")
+                ));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return earningsList;
     }
 }

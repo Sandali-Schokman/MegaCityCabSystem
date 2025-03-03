@@ -25,22 +25,24 @@
 <html>
 <head>
     <title>admin-dashboard</title>
+    <link rel="stylesheet" href="../../assets/css/dashboard.css">
 </head>
 <body>
 <%@ include file="dashboard-header.jsp" %>
 <div class="dashboard">
-    <h2>Admin Dashboard</h2>
+    <h1>Admin Dashboard</h1>
     <p>Manage users, view reports, and oversee the system.</p>
 
     <div class="dashboard-options">
         <a href="#">Manage Users</a>
         <a href="../admin/manual-driver-assignment.jsp">Assign Drivers</a>
         <a href="<%= request.getContextPath() %>/viewDriverAvailability">Track Driver Availability</a>
+        <a href="../admin/earnings-report.jsp">Earnings Report</a>
         <a href="#">View Reports</a>
         <a href="#">System Logs</a>
     </div>
 
-    <h3>Driver Availability</h3>
+    <h2>Driver Availability</h2>
     <table border="1">
         <tr>
             <th>Driver ID</th>

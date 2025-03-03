@@ -21,12 +21,13 @@
 <html>
 <head>
     <title>driver-dashboard</title>
+    <link rel="stylesheet" href="../../assets/css/dashboard.css">
 </head>
 <body>
 <%@ include file="dashboard-header.jsp" %>
 
 <div class="dashboard">
-    <h2>Driver Dashboard</h2>
+    <h1>Driver Dashboard</h1>
     <p>Manage ride requests, update availability, and track earnings.</p>
 
     <%-- Display success or error messages --%>
@@ -45,7 +46,7 @@
 
     <%-- Availability Update Form --%>
     <div class="availability-form">
-        <h3>Update Availability</h3>
+        <h2>Update Availability</h2>
         <form action="<%= request.getContextPath() %>/updateAvailability" method="POST">
             <label for="status">Select Status:</label>
             <select name="status" id="status" required>

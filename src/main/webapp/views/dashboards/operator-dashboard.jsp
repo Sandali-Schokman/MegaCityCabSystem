@@ -22,23 +22,25 @@
 <html>
 <head>
     <title>operator-dashboard</title>
+    <link rel="stylesheet" href="../../assets/css/dashboard.css">
 </head>
 <body>
 <%@ include file="dashboard-header.jsp" %>
 
 <div class="dashboard">
-    <h2>Operator Dashboard</h2>
+    <h1>Operator Dashboard</h1>
     <p>Manage bookings, assign drivers, and resolve complaints.</p>
 
     <div class="dashboard-options">
         <a href="<%= request.getContextPath() %>/views/manager/register-driver.jsp">Register Driver</a>
         <a href="<%= request.getContextPath() %>/views/admin/manual-driver-assignment.jsp">Assign Drivers</a>
         <a href="<%= request.getContextPath() %>/viewDriverAvailability">Track Driver Availability</a>
+        <a href="../manager/earnings-report.jsp">Earnings Report</a>
         <a href="#">Handle Complaints</a>
         <a href="#">Verify Payments</a>
     </div>
 
-    <h3>Driver Availability</h3>
+    <h2>Driver Availability</h2>
     <table border="1">
         <tr>
             <th>Driver ID</th>
