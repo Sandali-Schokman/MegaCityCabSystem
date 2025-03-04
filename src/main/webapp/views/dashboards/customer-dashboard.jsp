@@ -12,7 +12,7 @@
 <jsp:include page="../session-check.jsp"/>
 
 <%
-    String role = SessionUtils.getUserRole(request);
+    String role = (String) session.getAttribute("role");
     if (!"CUSTOMER".equals(role)) {
         response.sendRedirect("../unauthorized.jsp");
         return;
@@ -41,6 +41,7 @@
         <a href="<%= request.getContextPath() %>/views/booking.jsp">Book a Ride</a>
         <a href="#">Ride History</a>
         <a href="#">Payments</a>
+        <a href="<%= request.getContextPath() %>/views/customer/complaint.jsp">Complaints</a>
     </div>
     <h2>Your Booking History</h2>
     <table border="1">

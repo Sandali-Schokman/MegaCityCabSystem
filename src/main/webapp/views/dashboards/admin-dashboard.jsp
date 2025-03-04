@@ -41,6 +41,7 @@
         <a href="#">View Reports</a>
         <a href="<%= request.getContextPath() %>/views/admin/booking-trends.jsp">Booking Trends Report</a>
         <a href="<%= request.getContextPath() %>/views/manager/driver-performance.jsp">Driver Performance Report</a>
+        <a href="<%= request.getContextPath() %>/views/admin/manage-complaints.jsp">Manage Complaints</a>
         <a href="#">System Logs</a>
     </div>
 
