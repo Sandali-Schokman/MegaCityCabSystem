@@ -18,7 +18,7 @@ public class BookingDAO {
             stmt.setInt(1, booking.getCustomerId());
             stmt.setString(2, booking.getPickupLocation());
             stmt.setString(3, booking.getDropoffLocation());
-            stmt.setTimestamp(4, booking.getScheduledTime());
+            stmt.setTimestamp(4, Timestamp.valueOf(booking.getScheduledTime()));
             stmt.setDouble(5, booking.getFare());
 
             int affectedRows = stmt.executeUpdate();
@@ -44,7 +44,7 @@ public class BookingDAO {
                         rs.getInt("driver_id"),
                         rs.getString("pickup_location"),
                         rs.getString("dropoff_location"),
-                        rs.getTimestamp("scheduled_time"),
+                        rs.getTimestamp("scheduled_time").toLocalDateTime(),
                         rs.getString("booking_status"),
                         rs.getDouble("fare"),
                         rs.getString("payment_status"),
@@ -110,7 +110,7 @@ public class BookingDAO {
                         rs.getInt("driver_id"),
                         rs.getString("pickup_location"),
                         rs.getString("dropoff_location"),
-                        rs.getTimestamp("scheduled_time"),
+                        rs.getTimestamp("scheduled_time").toLocalDateTime(),
                         rs.getString("booking_status"),
                         rs.getDouble("fare"),
                         rs.getString("payment_status"),

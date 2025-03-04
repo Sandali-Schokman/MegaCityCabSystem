@@ -1,6 +1,7 @@
 package dto;
 
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 public class BookingDTO {
     private int bookingId;
@@ -8,7 +9,7 @@ public class BookingDTO {
     private Integer driverId;
     private String pickupLocation;
     private String dropoffLocation;
-    private Timestamp scheduledTime;
+    private LocalDateTime scheduledTime;
     private String bookingStatus;
     private double fare;
     private String paymentStatus;
@@ -16,7 +17,7 @@ public class BookingDTO {
     private Timestamp completionTime;
 
     public BookingDTO(int bookingId, int customerId, Integer driverId, String pickupLocation,
-                      String dropoffLocation, Timestamp scheduledTime, String bookingStatus,
+                      String dropoffLocation, LocalDateTime scheduledTime, String bookingStatus,
                       double fare, String paymentStatus, Timestamp assignedTime, Timestamp completionTime) {
         this.bookingId = bookingId;
         this.customerId = customerId;
@@ -37,7 +38,7 @@ public class BookingDTO {
     public Integer getDriverId() { return driverId; }
     public String getPickupLocation() { return pickupLocation; }
     public String getDropoffLocation() { return dropoffLocation; }
-    public Timestamp getScheduledTime() { return scheduledTime; }
+    public LocalDateTime getScheduledTime() { return scheduledTime; }
     public String getBookingStatus() { return bookingStatus; }
     public double getFare() { return fare; }
     public String getPaymentStatus() { return paymentStatus; }

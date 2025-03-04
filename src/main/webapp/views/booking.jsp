@@ -20,6 +20,7 @@
     <meta charset="UTF-8">
     <title>Book a Ride</title>
     <link rel="stylesheet" href="../assets/css/booking.css">
+
 </head>
 <body>
 
@@ -43,6 +44,9 @@
         <label>Distance (KM) <small>(Leave empty for fixed route pricing)</small></label>
         <input type="number" step="0.1" name="distance" required>
 
+        <label>Scheduled Time</label>
+        <input type="datetime-local" id="scheduled_time" name="scheduled_time" required>
+
         <button type="submit">Calculate Fare</button>
     </form>
 
@@ -56,6 +60,10 @@
         <input type="hidden" name="dropoff_location" value="<%= request.getParameter("dropoff") %>">
         <input type="hidden" name="distance_km" value="<%= request.getParameter("distance") %>">
         <input type="hidden" name="fare" value="<%= request.getAttribute("calculatedFare") %>">
+        <input type="hidden" name="scheduled_time" value="<%= request.getParameter("scheduled_time") %>">
+        <script>
+            document.getElementById('scheduled_time').value = new Date().toISOString().slice(0, 16);
+        </script>
 
         <button type="submit">Confirm Booking</button>
     </form>
