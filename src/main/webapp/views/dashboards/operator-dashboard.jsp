@@ -32,10 +32,14 @@
     <p>Manage bookings, assign drivers, and resolve complaints.</p>
 
     <div class="dashboard-options">
+        <a href="#">Manage Bookings</a>
         <a href="<%= request.getContextPath() %>/views/manager/register-driver.jsp">Register Driver</a>
         <a href="<%= request.getContextPath() %>/views/admin/manual-driver-assignment.jsp">Assign Drivers</a>
         <a href="<%= request.getContextPath() %>/viewDriverAvailability">Track Driver Availability</a>
         <a href="../manager/earnings-report.jsp">Earnings Report</a>
+        <a href="#">View Reports</a>
+        <a href="<%= request.getContextPath() %>/views/admin/booking-trends.jsp">Booking Trends Report</a>
+        <a href="<%= request.getContextPath() %>/views/manager/driver-performance.jsp">Driver Performance Report</a>
         <a href="#">Handle Complaints</a>
         <a href="#">Verify Payments</a>
     </div>

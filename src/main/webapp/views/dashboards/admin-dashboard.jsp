@@ -39,6 +39,8 @@
         <a href="<%= request.getContextPath() %>/viewDriverAvailability">Track Driver Availability</a>
         <a href="../admin/earnings-report.jsp">Earnings Report</a>
         <a href="#">View Reports</a>
+        <a href="<%= request.getContextPath() %>/views/admin/booking-trends.jsp">Booking Trends Report</a>
+        <a href="<%= request.getContextPath() %>/views/manager/driver-performance.jsp">Driver Performance Report</a>
         <a href="#">System Logs</a>
     </div>
 
