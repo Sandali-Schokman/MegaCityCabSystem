@@ -24,6 +24,7 @@
 <html>
 <head>
     <title>Manual Driver Assignment</title>
+    <link rel="stylesheet" href="../assets/css/login.css">
 </head>
 <body>
 <%-- Include the correct dashboard based on the user role --%>
