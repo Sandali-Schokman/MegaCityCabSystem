@@ -42,6 +42,7 @@
         <a href="#">Ride History</a>
         <a href="#">Payments</a>
         <a href="<%= request.getContextPath() %>/views/customer/complaint.jsp">Complaints</a>
+        <a href="<%= request.getContextPath() %>/views/customer/review.jsp">Review</a>
     </div>
     <h2>Your Booking History</h2>
     <table border="1">
