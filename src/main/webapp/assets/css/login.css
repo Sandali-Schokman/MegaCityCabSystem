@@ -13,7 +13,7 @@ body {
     justify-content: center;
     align-items: center;
     height: 100vh;
-    background: linear-gradient(to right, #6a11cb, #2575fc);
+    background: linear-gradient(to right, #ffcc00, #222);
 }
 
 .login-container {
@@ -35,11 +35,12 @@ body {
 
 h2 {
     margin-bottom: 20px;
-    color: #333;
+    color: #222;
 }
 
 .input-group {
     position: relative;
+    text-align: left;
     margin-bottom: 15px;
 }
 
@@ -65,15 +66,15 @@ button {
     padding: 10px;
     border: none;
     border-radius: 5px;
-    background: #2575fc;
-    color: white;
+    background: #ffcc00;
+    color: black;
     font-size: 18px;
     cursor: pointer;
     transition: 0.3s;
 }
 
 button:hover {
-    background: #6a11cb;
+    background: #e6b800;
 }
 
 .error-msg {
@@ -84,7 +85,7 @@ button:hover {
 
 p a {
     text-decoration: none;
-    color: #2575fc;
+    color: #ffcc00;
 }
 
 p a:hover {

@@ -1,7 +1,12 @@
 package models;
 
 import java.sql.Timestamp;
-import java.time.LocalDateTime;
+
+
+/**
+ * Booking Entity - Represents a booking in the system.
+ * Implements Builder Pattern for flexible object creation.
+ */
 
 public class Booking {
     private int bookingId;
@@ -9,40 +14,131 @@ public class Booking {
     private Integer driverId; // Nullable before assignment
     private String pickupLocation;
     private String dropoffLocation;
-    private LocalDateTime scheduledTime;
+    private Timestamp scheduledTime;
     private String bookingStatus;
     private double fare;
     private String paymentStatus;
+    private String assignedBy;
+    private Integer assignedByUser;
     private Timestamp assignedTime;
     private Timestamp completionTime;
 
-    // Constructor
-    public Booking(int bookingId, int customerId, Integer driverId, String pickupLocation,
-                   String dropoffLocation, LocalDateTime scheduledTime, String bookingStatus,
-                   double fare, String paymentStatus, Timestamp assignedTime, Timestamp completionTime) {
-        this.bookingId = bookingId;
-        this.customerId = customerId;
-        this.driverId = driverId;
-        this.pickupLocation = pickupLocation;
-        this.dropoffLocation = dropoffLocation;
-        this.scheduledTime = scheduledTime;
-        this.bookingStatus = bookingStatus;
-        this.fare = fare;
-        this.paymentStatus = paymentStatus;
-        this.assignedTime = assignedTime;
-        this.completionTime = completionTime;
+    // Constructor- Builder Pattern
+    private Booking(BookingBuilder builder) {
+        this.bookingId = builder.bookingId;
+        this.customerId = builder.customerId;
+        this.driverId = builder.driverId;
+        this.pickupLocation = builder.pickupLocation;
+        this.dropoffLocation = builder.dropoffLocation;
+        this.scheduledTime = builder.scheduledTime;
+        this.bookingStatus = builder.bookingStatus;
+        this.fare = builder.fare;
+        this.paymentStatus = builder.paymentStatus;
+        this.assignedBy = builder.assignedBy;
+        this.assignedByUser = builder.assignedByUser;
+        this.assignedTime = builder.assignedTime;
+        this.completionTime = builder.completionTime;
     }
 
-    // Getters & Setters
+    // Getters (No Setters - Immutable Object)
     public int getBookingId() { return bookingId; }
     public int getCustomerId() { return customerId; }
     public Integer getDriverId() { return driverId; }
     public String getPickupLocation() { return pickupLocation; }
     public String getDropoffLocation() { return dropoffLocation; }
-    public LocalDateTime getScheduledTime() { return scheduledTime; }
+    public Timestamp getScheduledTime() { return scheduledTime; }
     public String getBookingStatus() { return bookingStatus; }
     public double getFare() { return fare; }
     public String getPaymentStatus() { return paymentStatus; }
+    public String getAssignedBy() { return assignedBy; }
+    public Integer getAssignedByUser() { return assignedByUser; }
     public Timestamp getAssignedTime() { return assignedTime; }
     public Timestamp getCompletionTime() { return completionTime; }
+
+    // Builder Class for Booking
+    public static class BookingBuilder {
+        private int bookingId;
+        private int customerId;
+        private Integer driverId;
+        private String pickupLocation;
+        private String dropoffLocation;
+        private Timestamp scheduledTime;
+        private String bookingStatus;
+        private double fare;
+        private String paymentStatus;
+        private String assignedBy;
+        private Integer assignedByUser;
+        private Timestamp assignedTime;
+        private Timestamp completionTime;
+
+        public BookingBuilder setBookingId(int bookingId) {
+            this.bookingId = bookingId;
+            return this;
+        }
+
+        public BookingBuilder setCustomerId(int customerId) {
+            this.customerId = customerId;
+            return this;
+        }
+
+        public BookingBuilder setDriverId(Integer driverId) {
+            this.driverId = driverId;
+            return this;
+        }
+
+        public BookingBuilder setPickupLocation(String pickupLocation) {
+            this.pickupLocation = pickupLocation;
+            return this;
+        }
+
+        public BookingBuilder setDropoffLocation(String dropoffLocation) {
+            this.dropoffLocation = dropoffLocation;
+            return this;
+        }
+
+        public BookingBuilder setScheduledTime(Timestamp scheduledTime) {
+            this.scheduledTime = scheduledTime;
+            return this;
+        }
+
+        public BookingBuilder setBookingStatus(String bookingStatus) {
+            this.bookingStatus = bookingStatus;
+            return this;
+        }
+
+        public BookingBuilder setFare(double fare) {
+            this.fare = fare;
+            return this;
+        }
+
+        public BookingBuilder setPaymentStatus(String paymentStatus) {
+            this.paymentStatus = paymentStatus;
+            return this;
+        }
+
+        public BookingBuilder setAssignedBy(String assignedBy) {
+            this.assignedBy = assignedBy;
+            return this;
+        }
+
+        public BookingBuilder setAssignedByUser(Integer assignedByUser) {
+            this.assignedByUser = assignedByUser;
+            return this;
+        }
+
+        public BookingBuilder setAssignedTime(Timestamp assignedTime) {
+            this.assignedTime = assignedTime;
+            return this;
+        }
+
+        public BookingBuilder setCompletionTime(Timestamp completionTime) {
+            this.completionTime = completionTime;
+            return this;
+        }
+
+        public Booking build() {
+            return new Booking(this);
+        }
+    }
+
 }

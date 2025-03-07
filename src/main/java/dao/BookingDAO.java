@@ -10,53 +10,196 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BookingDAO {
+    //Add a new booking
     public boolean addBooking(Booking booking) {
-        String query = "INSERT INTO bookings (customer_id, pickup_location, dropoff_location, scheduled_time, fare) VALUES (?, ?, ?, ?, ?)";
+        String query = "INSERT INTO bookings (customer_id, driver_id, pickup_location, dropoff_location, scheduled_time, " +
+                "booking_status, fare, payment_status, assigned_by, assigned_by_user, assigned_time, completion_time) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         try (Connection conn = DatabaseConnection.getInstance().getConnection();
              PreparedStatement stmt = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
+
             stmt.setInt(1, booking.getCustomerId());
-            stmt.setString(2, booking.getPickupLocation());
-            stmt.setString(3, booking.getDropoffLocation());
-            stmt.setTimestamp(4, Timestamp.valueOf(booking.getScheduledTime()));
-            stmt.setDouble(5, booking.getFare());
+            stmt.setObject(2, booking.getDriverId(), Types.INTEGER);
+            stmt.setString(3, booking.getPickupLocation());
+            stmt.setString(4, booking.getDropoffLocation());
+            stmt.setTimestamp(5, booking.getScheduledTime());
+            stmt.setString(6, booking.getBookingStatus());
+            stmt.setDouble(7, booking.getFare());
+            stmt.setString(8, booking.getPaymentStatus());
+            stmt.setString(9, booking.getAssignedBy());
+            stmt.setObject(10, booking.getAssignedByUser(), Types.INTEGER);
+            stmt.setTimestamp(11, booking.getAssignedTime());
+            stmt.setTimestamp(12, booking.getCompletionTime());
 
             int affectedRows = stmt.executeUpdate();
             return affectedRows > 0;
+
         } catch (SQLException e) {
             e.printStackTrace();
-            return false;
         }
+        return false;
     }
 
-    public List<BookingDTO> getAllBookings() {
-        List<BookingDTO> bookings = new ArrayList<>();
-        String query = "SELECT * FROM bookings";
+    //Retrieve a booking by ID
+    public BookingDTO getBookingById(int bookingId) {
+        String query = "SELECT * FROM bookings WHERE booking_id = ?";
 
         try (Connection conn = DatabaseConnection.getInstance().getConnection();
-             Statement stmt = conn.createStatement();
-             ResultSet rs = stmt.executeQuery(query)) {
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+
+            stmt.setInt(1, bookingId);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                return BookingMapper.toDTO(mapResultSetToBooking(rs));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    //Retrieve all bookings
+    public List<BookingDTO> getAllBookings() {
+        List<BookingDTO> bookings = new ArrayList<>();
+        String query = "SELECT * FROM bookings ORDER BY scheduled_time DESC";
+
+        try (Connection conn = DatabaseConnection.getInstance().getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query);
+             ResultSet rs = stmt.executeQuery()) {
 
             while (rs.next()) {
-                Booking booking = new Booking(
-                        rs.getInt("booking_id"),
-                        rs.getInt("customer_id"),
-                        rs.getInt("driver_id"),
-                        rs.getString("pickup_location"),
-                        rs.getString("dropoff_location"),
-                        rs.getTimestamp("scheduled_time").toLocalDateTime(),
-                        rs.getString("booking_status"),
-                        rs.getDouble("fare"),
-                        rs.getString("payment_status"),
-                        rs.getTimestamp("assigned_time"),
-                        rs.getTimestamp("completion_time")
-                );
-                bookings.add(BookingMapper.toDTO(booking));
+                bookings.add(BookingMapper.toDTO(mapResultSetToBooking(rs)));
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return bookings;
+    }
+
+    //Retrieve bookings for a specific customer
+    public List<BookingDTO> getBookingsByCustomer(int customerId) {
+        List<BookingDTO> bookings = new ArrayList<>();
+        String query = "SELECT * FROM bookings WHERE customer_id = ? ORDER BY scheduled_time DESC";
+
+        try (Connection conn = DatabaseConnection.getInstance().getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+
+            stmt.setInt(1, customerId);
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                bookings.add(BookingMapper.toDTO(mapResultSetToBooking(rs)));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return bookings;
+    }
+
+    //Retrieve pending bookings that need driver assignment
+    public List<BookingDTO> getPendingBookings() {
+        List<BookingDTO> bookings = new ArrayList<>();
+        String query = "SELECT * FROM bookings WHERE booking_status = 'PENDING' ORDER BY scheduled_time ASC";
+
+        try (Connection conn = DatabaseConnection.getInstance().getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query);
+             ResultSet rs = stmt.executeQuery()) {
+
+            while (rs.next()) {
+                bookings.add(BookingMapper.toDTO(mapResultSetToBooking(rs)));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return bookings;
+    }
+
+    //Update booking status
+    public boolean updateBookingStatus(int bookingId, String newStatus) {
+        String query = "UPDATE bookings SET booking_status = ? WHERE booking_id = ?";
+
+        try (Connection conn = DatabaseConnection.getInstance().getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+
+            stmt.setString(1, newStatus);
+            stmt.setInt(2, bookingId);
+
+            return stmt.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    //Cancel a booking
+    public boolean cancelBooking(int bookingId) {
+        String query = "UPDATE bookings SET booking_status = 'CANCELLED' WHERE booking_id = ?";
+
+        try (Connection conn = DatabaseConnection.getInstance().getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+
+            stmt.setInt(1, bookingId);
+            return stmt.executeUpdate() > 0;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    //Mark a booking as completed
+    public boolean completeBooking(int bookingId) {
+        String query = "UPDATE bookings SET booking_status = 'COMPLETED', completion_time = CURRENT_TIMESTAMP WHERE booking_id = ?";
+
+        try (Connection conn = DatabaseConnection.getInstance().getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+
+            stmt.setInt(1, bookingId);
+            return stmt.executeUpdate() > 0;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    //Map ResultSet to Booking Object
+    private Booking mapResultSetToBooking(ResultSet rs) throws SQLException {
+        return new Booking.BookingBuilder()
+                .setBookingId(rs.getInt("booking_id"))
+                .setCustomerId(rs.getInt("customer_id"))
+                .setDriverId((Integer) rs.getObject("driver_id"))
+                .setPickupLocation(rs.getString("pickup_location"))
+                .setDropoffLocation(rs.getString("dropoff_location"))
+                .setScheduledTime(rs.getTimestamp("scheduled_time"))
+                .setBookingStatus(rs.getString("booking_status"))
+                .setFare(rs.getDouble("fare"))
+                .setPaymentStatus(rs.getString("payment_status"))
+                .setAssignedBy(rs.getString("assigned_by"))
+                .setAssignedByUser((Integer) rs.getObject("assigned_by_user"))
+                .setAssignedTime(rs.getTimestamp("assigned_time"))
+                .setCompletionTime(rs.getTimestamp("completion_time"))
+                .build();
+    }
+
+    // Assign a driver to a booking manually
+    public boolean assignDriver(int bookingId, int driverId, int assignedByUser) {
+        String query = "UPDATE bookings SET driver_id = ?, booking_status = 'CONFIRMED', assigned_by = 'MANAGER', assigned_by_user = ?, assigned_time = NOW() WHERE booking_id = ?";
+
+        try (Connection conn = DatabaseConnection.getInstance().getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+
+            stmt.setInt(1, driverId);
+            stmt.setInt(2, assignedByUser);
+            stmt.setInt(3, bookingId);
+
+            return stmt.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
     // Get fare based on predefined distance
@@ -94,52 +237,5 @@ public class BookingDAO {
         return 50.00; // Default per-km rate if not found
     }
 
-    // Get pending bookings (bookings without assigned drivers)
-    public List<BookingDTO> getPendingBookings() {
-        List<BookingDTO> pendingBookings = new ArrayList<>();
-        String query = "SELECT * FROM bookings WHERE driver_id IS NULL AND booking_status = 'PENDING'";
 
-        try (Connection conn = DatabaseConnection.getInstance().getConnection();
-             PreparedStatement stmt = conn.prepareStatement(query);
-             ResultSet rs = stmt.executeQuery()) {
-
-            while (rs.next()) {
-                Booking booking = new Booking(
-                        rs.getInt("booking_id"),
-                        rs.getInt("customer_id"),
-                        rs.getInt("driver_id"),
-                        rs.getString("pickup_location"),
-                        rs.getString("dropoff_location"),
-                        rs.getTimestamp("scheduled_time").toLocalDateTime(),
-                        rs.getString("booking_status"),
-                        rs.getDouble("fare"),
-                        rs.getString("payment_status"),
-                        rs.getTimestamp("assigned_time"),
-                        rs.getTimestamp("completion_time")
-                );
-                pendingBookings.add(BookingMapper.toDTO(booking));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return pendingBookings;
-    }
-
-    // Assign a driver to a booking manually
-    public boolean assignDriverToBooking(int bookingId, int driverId, int assignedBy) {
-        String query = "UPDATE bookings SET driver_id = ?, booking_status = 'CONFIRMED', assigned_by = 'MANAGER', assigned_by_user = ?, assigned_time = NOW() WHERE booking_id = ?";
-
-        try (Connection conn = DatabaseConnection.getInstance().getConnection();
-             PreparedStatement stmt = conn.prepareStatement(query)) {
-
-            stmt.setInt(1, driverId);
-            stmt.setInt(2, assignedBy);
-            stmt.setInt(3, bookingId);
-
-            return stmt.executeUpdate() > 0;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
 }

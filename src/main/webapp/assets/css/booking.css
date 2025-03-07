@@ -17,17 +17,17 @@ body {
 
 .container {
     width: 90%;
-    max-width: 400px;
+    max-width: 500px;
     background: #fff;
-    padding: 20px;
+    padding: 25px;
     border-radius: 10px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     text-align: center;
 }
 
 h2 {
-    color: #333;
-    margin-bottom: 20px;
+    color: #222;
+    margin-bottom: 15px;
 }
 
 input, button {
@@ -40,18 +40,18 @@ input, button {
 }
 
 button {
-    background-color: #007bff;
-    color: white;
+    background-color: #ffcc00;
+    color: black;
     border: none;
     cursor: pointer;
     transition: background 0.3s ease;
 }
 
 button:hover {
-    background-color: #0056b3;
+    background-color: #e6b800;
 }
 
 p a {
-    color: #007bff;
+    color: #ffcc00;
     text-decoration: none;
 }

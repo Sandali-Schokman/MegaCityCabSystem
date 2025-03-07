@@ -13,17 +13,46 @@ public class FareCalculatorServlet extends HttpServlet {
     private final BookingService bookingService = new BookingService();
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String pickup = request.getParameter("pickup");
-        String dropoff = request.getParameter("dropoff");
-        double distance = Double.parseDouble(request.getParameter("distance"));
+        try {
+            // Retrieve parameters safely
+            String pickup = request.getParameter("pickup");
+            String dropoff = request.getParameter("dropoff");
+            String distanceStr = request.getParameter("distance");
 
-        double fare = bookingService.calculateFare(pickup, dropoff, distance);
+            // Validate input parameters
+            if (pickup == null || pickup.trim().isEmpty() || dropoff == null || dropoff.trim().isEmpty()) {
+                response.sendRedirect(request.getContextPath() + "/views/customer/book-ride.jsp?error=Pickup%20and%20Dropoff%20are%20required.");
+                return;
+            }
 
-        // Set the fare as a request attribute
-        request.setAttribute("calculatedFare", fare);
+            double distance = 0;
+            if (distanceStr != null && !distanceStr.trim().isEmpty()) {
+                try {
+                    distance = Double.parseDouble(distanceStr);
+                    if (distance < 0) {
+                        response.sendRedirect(request.getContextPath() + "/views/customer/book-ride.jsp?error=Distance%20cannot%20be%20negative.");
+                        return;
+                    }
+                } catch (NumberFormatException e) {
+                    response.sendRedirect(request.getContextPath() + "/views/customer/book-ride.jsp?error=Invalid%20distance%20format.");
+                    return;
+                }
+            }
 
-        // Forward the request to the booking.jsp page
-        request.getRequestDispatcher("/views/booking.jsp").forward(request, response);
+            // Calculate the fare
+            double fare = bookingService.calculateFare(pickup, dropoff, distance);
+
+            // Retain input values for the form
+            request.setAttribute("pickup", pickup);
+            request.setAttribute("dropoff", dropoff);
+            request.setAttribute("distance", distance);
+            request.setAttribute("calculatedFare", fare);
+
+            // Forward back to the booking page
+            request.getRequestDispatcher("/views/customer/book-ride.jsp").forward(request, response);
+        } catch (Exception e) {
+            e.printStackTrace();
+            response.sendRedirect(request.getContextPath() + "/views/customer/book-ride.jsp?error=An%20unexpected%20error%20occurred.");
+        }
     }
 }
-

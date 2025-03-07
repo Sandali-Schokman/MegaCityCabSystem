@@ -11,6 +11,7 @@
 <html>
 <head>
     <title>dashboard-header</title>
+    <link rel="stylesheet" href="../../assets/css/dashboard-header.css">
 </head>
 <body>
 <div class="navbar">

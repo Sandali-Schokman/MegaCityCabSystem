@@ -4,21 +4,58 @@ import dao.BookingDAO;
 import dto.BookingDTO;
 import mappers.BookingMapper;
 import models.Booking;
-
-
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Optional;
+
+//Uses Facade Pattern to simplify booking operations.
 
 public class BookingService {
     private final BookingDAO bookingDAO = new BookingDAO();
 
+    //Create a new booking
     public boolean createBooking(BookingDTO bookingDTO) {
         Booking booking = BookingMapper.toEntity(bookingDTO);
         return bookingDAO.addBooking(booking);
     }
 
+    //Get booking details by ID
+    public Optional<BookingDTO> getBookingById(int bookingId) {
+        return Optional.ofNullable(bookingDAO.getBookingById(bookingId));
+    }
+
+    //Get all bookings
     public List<BookingDTO> getAllBookings() {
         return bookingDAO.getAllBookings();
+    }
+
+    //Get bookings for a specific customer
+    public List<BookingDTO> getBookingsByCustomer(int customerId) {
+        return bookingDAO.getBookingsByCustomer(customerId);
+    }
+
+    //Get pending bookings for driver assignment
+    public List<BookingDTO> getPendingBookings() {
+        return bookingDAO.getPendingBookings();
+    }
+
+    //Assign a driver to a booking
+    public boolean assignDriver(int bookingId, int driverId, int assignedByUser) {
+        return bookingDAO.assignDriver(bookingId, driverId, assignedByUser);
+    }
+
+    //Update the status of a booking
+    public boolean updateBookingStatus(int bookingId, String newStatus) {
+        return bookingDAO.updateBookingStatus(bookingId, newStatus);
+    }
+
+    //Cancel a booking
+    public boolean cancelBooking(int bookingId) {
+        return bookingDAO.cancelBooking(bookingId);
+    }
+
+    //Mark a booking as completed
+    public boolean completeBooking(int bookingId) {
+        return bookingDAO.completeBooking(bookingId);
     }
 
     // Calculate fare

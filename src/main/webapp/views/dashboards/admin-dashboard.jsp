@@ -36,6 +36,7 @@
     <div class="dashboard-options">
         <a href="#">Manage Users</a>
         <a href="../admin/manual-driver-assignment.jsp">Assign Drivers</a>
+        <a href="<%= request.getContextPath()%>/views/admin/manage-bookings.jsp">Manage Bookings</a>
         <a href="<%= request.getContextPath() %>/viewDriverAvailability">Track Driver Availability</a>
         <a href="../admin/earnings-report.jsp">Earnings Report</a>
         <a href="#">View Reports</a>

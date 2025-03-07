@@ -38,30 +38,13 @@
     <p>Book rides, view history, and manage payments.</p>
 
     <div class="dashboard-options">
-        <a href="<%= request.getContextPath() %>/views/booking.jsp">Book a Ride</a>
+        <a href="<%= request.getContextPath() %>/views/customer/book-ride.jsp">Book a Ride</a>
+        <a href="<%= request.getContextPath() %>/views/customer/bookings.jsp">My Bookings</a>
         <a href="#">Ride History</a>
         <a href="#">Payments</a>
         <a href="<%= request.getContextPath() %>/views/customer/complaint.jsp">Complaints</a>
         <a href="<%= request.getContextPath() %>/views/customer/review.jsp">Review</a>
     </div>
-    <h2>Your Booking History</h2>
-    <table border="1">
-        <tr>
-            <th>Pickup</th>
-            <th>Dropoff</th>
-            <th>Scheduled Time</th>
-            <th>Status</th>
-        </tr>
-        <% if (bookings != null) {
-            for (BookingDTO booking : bookings) { %>
-        <tr>
-            <td><%= booking.getPickupLocation() %></td>
-            <td><%= booking.getDropoffLocation() %></td>
-            <td><%= booking.getScheduledTime() %></td>
-            <td><%= booking.getBookingStatus() %></td>
-        </tr>
-        <% }} %>
-    </table>
 </div>
 <%@ include file="dashboard-footer.jsp" %>
 

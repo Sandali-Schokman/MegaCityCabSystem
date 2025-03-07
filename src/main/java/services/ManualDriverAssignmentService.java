@@ -20,7 +20,7 @@ public class ManualDriverAssignmentService {
     }
 
     public boolean assignDriver(int bookingId, int driverId, int assignedBy) {
-        return bookingDAO.assignDriverToBooking(bookingId, driverId, assignedBy) &&
+        return bookingDAO.assignDriver(bookingId, driverId, assignedBy) &&
                 driverDAO.updateDriverAvailability(driverId, "IN_A_HIRE");
     }
 }
