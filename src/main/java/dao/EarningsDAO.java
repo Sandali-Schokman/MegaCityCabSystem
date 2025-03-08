@@ -12,6 +12,7 @@ import java.util.List;
 
 public class EarningsDAO {
     private Connection connection;
+    private  CommissionDAO commissionDAO;
 
     public EarningsDAO() {
         try {
@@ -19,23 +20,28 @@ public class EarningsDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
+        this.commissionDAO = new CommissionDAO();
     }
 
     // Retrieve Driver Earnings
     public EarningsDTO getDriverEarnings(int driverId) {
-        String query = "SELECT total_earnings, completed_rides, last_payment_date FROM drivers WHERE driver_id = ?";
+        double commissionRate = commissionDAO.getCommissionPercentage() / 100; // Convert to decimal
+        String query = "SELECT total_earnings, completed_rides FROM drivers WHERE driver_id = ?";
 
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
             stmt.setInt(1, driverId);
             ResultSet rs = stmt.executeQuery();
 
             if (rs.next()) {
-                return new EarningsDTO(
-                        driverId,
-                        rs.getDouble("total_earnings"),
-                        rs.getInt("completed_rides"),
-                        rs.getTimestamp("last_payment_date")
-                );
+                double totalEarnings = rs.getDouble("total_earnings");
+                int completedRides = rs.getInt("completed_rides");
+
+                // Calculate earnings breakdown
+                double companyShare = totalEarnings * commissionRate;
+                double driverEarnings = totalEarnings - companyShare;
+
+                return new EarningsDTO(driverId, totalEarnings, driverEarnings,companyShare, completedRides);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -43,24 +49,42 @@ public class EarningsDAO {
         return null;
     }
 
-    // Update Driver Earnings After Payment
-    public boolean updateEarnings(int driverId, double amount) {
-        String query = "UPDATE drivers SET total_earnings = total_earnings + ?, completed_rides = completed_rides + 1 WHERE driver_id = ?";
+    // Update earnings after ride payment
+    public boolean updateEarnings(int driverId, double fare) {
+        double commissionRate = commissionDAO.getCommissionPercentage() / 100;
+        double companyShare = fare * commissionRate;
+        double driverEarnings = fare - companyShare;
 
-        try (PreparedStatement stmt = connection.prepareStatement(query)) {
-            stmt.setDouble(1, amount);
+        String query = "UPDATE drivers SET total_earnings = total_earnings + ?, completed_rides = completed_rides + 1 WHERE driver_id = ?";
+        String paymentQuery = "INSERT INTO payments (booking_id, amount, driver_earnings, company_share, payment_status) VALUES (?, ?, ?, ?, 'CONFIRMED')";
+
+        try (PreparedStatement stmt = connection.prepareStatement(query);
+             PreparedStatement paymentStmt = connection.prepareStatement(paymentQuery)) {
+
+            // Update driver earnings
+            stmt.setDouble(1, fare);
             stmt.setInt(2, driverId);
-            return stmt.executeUpdate() > 0;
+            stmt.executeUpdate();
+
+            // Store payment breakdown
+            paymentStmt.setInt(1, driverId);
+            paymentStmt.setDouble(2, fare);
+            paymentStmt.setDouble(3, driverEarnings);
+            paymentStmt.setDouble(4, companyShare);
+            paymentStmt.executeUpdate();
+
+            return true;
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return false;
     }
 
+
     // Get earnings for all drivers (for admin & manager)
     public List<EarningsDTO> getAllDriversEarnings() {
         List<EarningsDTO> earningsList = new ArrayList<>();
-        String query = "SELECT driver_id, total_earnings, completed_rides, last_payment_date FROM drivers";
+        String query = "SELECT driver_id, total_earnings, driver_earnings, company_share, completed_rides, last_payment_date FROM drivers";
 
         try (PreparedStatement stmt = connection.prepareStatement(query);
              ResultSet rs = stmt.executeQuery()) {
@@ -69,8 +93,9 @@ public class EarningsDAO {
                 earningsList.add(new EarningsDTO(
                         rs.getInt("driver_id"),
                         rs.getDouble("total_earnings"),
-                        rs.getInt("completed_rides"),
-                        rs.getTimestamp("last_payment_date")
+                        rs.getDouble("driver_earnings"),
+                        rs.getDouble("company_share"),
+                        rs.getInt("completed_rides")
                 ));
             }
         } catch (SQLException e) {

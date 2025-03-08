@@ -15,7 +15,6 @@
 </head>
 <body>
 <div class="navbar">
-    <a href="../../index.jsp">Home</a>
     <% if (role.equals("ADMIN")) { %>
     <a href="admin-dashboard.jsp">Admin Panel</a>
     <% } else if (role.equals("MANAGER")) { %>
@@ -26,7 +25,7 @@
     <a href="customer-dashboard.jsp">Customer Panel</a>
     <% } %>
     <a href="profile.jsp">Profile</a>
-    <a href="../login.jsp">Logout</a>
+    <a href="../../index.jsp">Logout</a>
 </div>
 
 </body>

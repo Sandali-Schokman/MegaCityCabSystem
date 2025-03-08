@@ -47,6 +47,7 @@
         <a href="#">System Logs</a>
     </div>
 
+    <div>
     <h2>Driver Availability</h2>
     <table border="1">
         <tr>
@@ -70,6 +71,16 @@
         <tr><td colspan="5">No drivers found.</td></tr>
         <% } %>
     </table>
+    </div>
+    <div>
+        <h2>Set Commission Percentage</h2>
+        <form action="<%= request.getContextPath() %>/updateCommission" method="POST">
+            <label>Commission %:</label>
+            <input type="number" name="commission" step="0.01" min="0" max="100" required>
+            <button type="submit">Update</button>
+        </form>
+
+    </div>
 </div>
 <%@ include file="dashboard-footer.jsp" %>
 

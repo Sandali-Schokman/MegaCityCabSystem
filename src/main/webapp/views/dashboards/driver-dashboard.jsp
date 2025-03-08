@@ -40,8 +40,8 @@
     <div class="dashboard-options">
         <a href="#">View Assigned Rides</a>
         <a href="#">Update Availability</a>
-        <a href="#">Check Earnings</a>
         <a href="<%= request.getContextPath() %>/earnings">View Earnings</a>
+        <a href="<%= request.getContextPath() %>/views/driver/verify-cash.jsp">Verify Cash</a>
     </div>
 
     <%-- Availability Update Form --%>

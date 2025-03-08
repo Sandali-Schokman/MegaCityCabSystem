@@ -5,18 +5,22 @@ import java.sql.Timestamp;
 public class EarningsDTO {
     private int driverId;
     private double totalEarnings;
+    private double driverEarnings;
+    private double companyShare;
     private int completedRides;
-    private Timestamp lastPaymentDate;
 
-    public EarningsDTO(int driverId, double totalEarnings, int completedRides, Timestamp lastPaymentDate) {
+    public EarningsDTO(int driverId, double totalEarnings, double driverEarnings, double companyShare, int completedRides) {
         this.driverId = driverId;
         this.totalEarnings = totalEarnings;
+        this.driverEarnings = driverEarnings;
+        this.companyShare = companyShare;
         this.completedRides = completedRides;
-        this.lastPaymentDate = lastPaymentDate;
-    }
+            }
 
     public int getDriverId() { return driverId; }
     public double getTotalEarnings() { return totalEarnings; }
+    public double getDriverEarnings() { return driverEarnings; }
+    public double getCompanyShare() { return companyShare; }
     public int getCompletedRides() { return completedRides; }
-    public Timestamp getLastPaymentDate() { return lastPaymentDate; }
+
 }

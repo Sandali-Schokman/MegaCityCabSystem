@@ -32,8 +32,8 @@ public class EarningsReportServlet extends HttpServlet {
         }
 
         // Fetch all drivers' earnings
-        List<EarningsDTO> earningsList = earningsService.getAllDriversEarnings();
-        request.setAttribute("earningsList", earningsList);
+        List<EarningsDTO> earningsReport = earningsService.getAllDriversEarnings();
+        request.setAttribute("earningsReport", earningsReport);
 
         // Forward to the correct dashboard
         if ("ADMIN".equals(role)) {

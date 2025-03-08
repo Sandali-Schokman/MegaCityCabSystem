@@ -4,6 +4,11 @@ import dao.EarningsDAO;
 import dto.EarningsDTO;
 import java.util.List;
 
+/**
+ * Service class for handling earnings-related operations
+ * Follows Facade Pattern to provide simplified API
+ */
+
 public class EarningsService {
     private EarningsDAO earningsDAO = new EarningsDAO(); // Dependency Injection
 

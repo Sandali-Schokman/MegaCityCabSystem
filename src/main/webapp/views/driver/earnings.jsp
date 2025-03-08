@@ -20,13 +20,28 @@
 <body>
 <%@ include file="../dashboards/driver-dashboard.jsp" %>
 
-<div class="dashboard">
+<div class="container">
     <h2>Driver Earnings</h2>
 
     <% if (earnings != null) { %>
-    <p><strong>Total Earnings:</strong> $<%= earnings.getTotalEarnings() %></p>
-    <p><strong>Completed Rides:</strong> <%= earnings.getCompletedRides() %></p>
-    <p><strong>Last Payment Date:</strong> <%= earnings.getLastPaymentDate() %></p>
+    <table border="1">
+        <tr>
+            <th>Total Earnings (LKR)</th>
+            <td>LKR <%= earnings.getTotalEarnings() %></td>
+        </tr>
+        <tr>
+            <th>Driver Earnings (LKR)</th>
+            <td>LKR <%= earnings.getDriverEarnings() %></td>
+        </tr>
+        <tr>
+            <th>Company Share (LKR)</th>
+            <td>LKR <%= earnings.getCompanyShare() %></td>
+        </tr>
+        <tr>
+            <th>Completed Rides</th>
+            <td><%= earnings.getCompletedRides() %></td>
+        </tr>
+    </table>
     <% } else { %>
     <p>No earnings data available.</p>
     <% } %>

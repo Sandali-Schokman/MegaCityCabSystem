@@ -1,0 +1,69 @@
+<%--
+  Created by IntelliJ IDEA.
+  User: Sandali Schokman
+  Date: 3/9/2025
+  Time: 12:00 AM
+  To change this template use File | Settings | File Templates.
+--%>
+<%@ page contentType="text/html; charset=UTF-8" language="java" %>
+<%@ page import="java.util.List, dto.PaymentDTO" %>
+
+<%
+  String error = request.getParameter("error");
+  String message = request.getParameter("message");
+  List<PaymentDTO> payments = (List<PaymentDTO>) request.getAttribute("payments");
+%>
+
+<html>
+<head>
+    <title>Verify Cash Payments</title>
+    <link rel="stylesheet" href="<%= request.getContextPath() %>/assets/css/dashboard.css">
+</head>
+<body>
+<jsp:include page="../dashboards/driver-dashboard.jsp"/>
+
+<div class="container">
+  <h2>Verify Cash Payments</h2>
+
+  <% if (error != null) { %>
+  <p class="error-msg"><%= error %></p>
+  <% } else if (message != null) { %>
+  <p class="success-msg"><%= message %></p>
+  <% } %>
+
+  <% if (payments != null && !payments.isEmpty()) { %>
+  <table border="1">
+    <tr>
+      <th>Payment ID</th>
+      <th>Booking ID</th>
+      <th>Amount</th>
+      <th>Payment Method</th>
+      <th>Action</th>
+    </tr>
+    <% for (PaymentDTO payment : payments) { %>
+    <tr>
+      <td><%= payment.getPaymentId() %></td>
+      <td><%= payment.getBookingId() %></td>
+      <td>LKR <%= payment.getAmount() %></td>
+      <td><%= payment.getMethod() %></td>
+      <td>
+        <% if ("CASH".equals(payment.getMethod()) && "NO".equals(payment.getVerifiedByDriver())) { %>
+        <form action="<%= request.getContextPath() %>/verifyCash" method="POST">
+          <input type="hidden" name="payment_id" value="<%= payment.getPaymentId() %>">
+          <button type="submit">Confirm Cash Received</button>
+        </form>
+        <% } else { %>
+        <span>Verified</span>
+        <% } %>
+      </td>
+    </tr>
+    <% } %>
+  </table>
+  <% } else { %>
+  <p>No pending cash payments.</p>
+  <% } %>
+
+  <a href="<%= request.getContextPath() %>/views/dashboards/driver-dashboard.jsp">Back to Dashboard</a>
+</div>
+</body>
+</html>
