@@ -27,10 +27,9 @@
     <% } %>
 
     <%-- Fare Calculation Form --%>
-    <form action="<%= request.getContextPath() %>/calculateFare" method="POST">
+    <form action="<%= request.getContextPath() %>/calculateFare" method="POST" id="one">
         <label>Pickup Location</label>
         <input type="text" name="pickup" value="<%= request.getAttribute("pickup") != null ? request.getAttribute("pickup") : "" %>" required>
-
         <label>Dropoff Location</label>
         <input type="text" name="dropoff" value="<%= request.getAttribute("dropoff") != null ? request.getAttribute("dropoff") : "" %>" required>
 

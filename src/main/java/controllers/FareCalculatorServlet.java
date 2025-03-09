@@ -42,6 +42,7 @@ public class FareCalculatorServlet extends HttpServlet {
             // Calculate the fare
             double fare = bookingService.calculateFare(pickup, dropoff, distance);
 
+
             // Retain input values for the form
             request.setAttribute("pickup", pickup);
             request.setAttribute("dropoff", dropoff);

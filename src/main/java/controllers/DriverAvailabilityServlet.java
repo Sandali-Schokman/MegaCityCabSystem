@@ -26,17 +26,17 @@ public class DriverAvailabilityServlet extends HttpServlet {
 
         String role = (String) session.getAttribute("role");
 
-        // ✅ Only Admin & Manager can access driver availability tracking
+        // Only Admin & Manager can access driver availability tracking
         if (!"ADMIN".equals(role) && !"MANAGER".equals(role)) {
             response.sendRedirect(request.getContextPath() + "/views/unauthorized.jsp");
             return;
         }
 
-        // ✅ Fetch all drivers & their availability
+        // Fetch all drivers & their availability
         List<DriverDTO> drivers = availabilityService.getAllDrivers();
         request.setAttribute("drivers", drivers);
 
-        // ✅ Forward to respective dashboard
+        // Forward to respective dashboard
         if ("ADMIN".equals(role)) {
             request.getRequestDispatcher("/views/dashboards/admin-dashboard.jsp").forward(request, response);
         } else {
@@ -45,7 +45,7 @@ public class DriverAvailabilityServlet extends HttpServlet {
     }
 
     /**
-     * ✅ Allow Drivers to update their availability
+     * Allow Drivers to update their availability
      */
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession(false);

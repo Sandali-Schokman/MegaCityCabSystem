@@ -9,6 +9,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.Enumeration;
 import java.util.List;
 
 import java.sql.Timestamp;
@@ -52,25 +53,31 @@ public class BookingServlet extends HttpServlet {
                 return;
             }
             double fare;
-            try {
-                fare = Double.parseDouble(fareStr);
-            } catch (NumberFormatException e) {
-                response.sendRedirect(request.getContextPath() + "/views/customer/book-ride.jsp?error=Invalid fare format.");
-                return;
-            }
+//            try {
+//                fare = Double.parseDouble(fareStr);
+//            } catch (NumberFormatException e) {
+//                System.out.println("ERROR: Invalid fare number: " + e.getMessage());
+//                response.sendRedirect(request.getContextPath() + "/views/customer/book-ride.jsp?error=Invalid fare format.");
+//                return;
+//            }
+            // vw
+            double fare2 = bookingService.calculateFare(pickupLocation, dropoffLocation, 12);
+            System.out.println("DEBUG: Received Fare2 -booking servlet 79 " + fare2);
 
             Timestamp scheduledTime;
             try {
-                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+                SimpleDateFormat dateFormat = new SimpleDateFormat("YYYY-MM-DD HH:MI:SS");
                 Date parsedDate = dateFormat.parse(scheduledTimeStr);
                 scheduledTime = new Timestamp(parsedDate.getTime());
             } catch (ParseException e) {
+                System.out.println("ERROR: Could not parse scheduled time: " + e.getMessage());
                 response.sendRedirect(request.getContextPath() + "/views/customer/book-ride.jsp?error=Invalid date format. Use YYYY-MM-DD HH:MM.");
                 return;
             }
 
             //Create Booking DTO (Driver ID is 0 initially, assigned later)
-            BookingDTO newBooking = new BookingDTO(0, customerId, 0, pickupLocation, dropoffLocation, scheduledTime, "PENDING", fare, "UNPAID");
+            BookingDTO newBooking = new BookingDTO(0, customerId, 0, pickupLocation, dropoffLocation, scheduledTime, "PENDING", 10.2 , "UNPAID");
+
 
             // Call service method to save booking
             boolean isBooked = bookingService.createBooking(newBooking);
