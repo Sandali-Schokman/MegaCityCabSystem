@@ -24,7 +24,9 @@
 <html>
 <head>
   <title>Driver Reviews</title>
-  <link rel="stylesheet" href="<%= request.getContextPath() %>/assets/css/dashboard.css">
+  <link rel="stylesheet" href="../../MegaCityCabSystem_war_exploded/assets/css/cabStyle.css">
+  <link rel="stylesheet" href="../../MegaCityCabSystem_war_exploded/assets/css/dashboard.css">
+  <link rel="stylesheet" href="../../MegaCityCabSystem_war_exploded/assets/css/dashboard-header.css">
   <script>
     // Function to filter reviews dynamically
     function filterReviews() {

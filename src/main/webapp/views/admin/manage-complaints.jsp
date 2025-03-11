@@ -24,7 +24,9 @@
 <html>
 <head>
   <title>Manage Complaints</title>
-  <link rel="stylesheet" href="<%= request.getContextPath() %>/assets/css/dashboard.css">
+  <link rel="stylesheet" href="../../MegaCityCabSystem_war_exploded/assets/css/cabStyle.css">
+  <link rel="stylesheet" href="../../MegaCityCabSystem_war_exploded/assets/css/dashboard.css">
+  <link rel="stylesheet" href="../../MegaCityCabSystem_war_exploded/assets/css/dashboard-header.css">
 </head>
 <body>
 <%-- Include Admin or Manager Dashboard --%>
@@ -77,7 +79,6 @@
 
   <a href="<%= request.getContextPath() %>/views/dashboards/admin-dashboard.jsp">Back to Dashboard</a>
 </div>
-
-
+<%@ include file="../dashboards/dashboard-footer.jsp" %>
 </body>
 </html>

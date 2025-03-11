@@ -48,6 +48,10 @@ public class BookingService {
         return bookingDAO.updateBookingStatus(bookingId, newStatus);
     }
 
+    public List<BookingDTO> getBookingsByDriverId(int driverId) {
+        return bookingDAO.getBookingsByDriverId(driverId);
+    }
+
     //Cancel a booking
     public boolean cancelBooking(int bookingId) {
         return bookingDAO.cancelBooking(bookingId);

@@ -7,9 +7,12 @@
 --%>
 <%@ page contentType="text/html; charset=UTF-8" language="java" %>
 <%@ page import="java.util.List, dto.BookingDTO" %>
+<%@ page import="dto.DriverDTO" %>
+
 
 <%
-    List<BookingDTO> allBookings = (List<BookingDTO>) request.getAttribute("allBookings");
+    List<BookingDTO> allBookings = (List<BookingDTO>) request.getAttribute("bookings");
+    List<DriverDTO> availableDrivers = (List<DriverDTO>) request.getAttribute("availableDrivers");
     String role = (String) session.getAttribute("role");
     String dashboardPage = "../dashboards/admin-dashboard.jsp"; // Default to Admin
 
@@ -21,10 +24,13 @@
 <html>
 <head>
     <title>Manage Bookings</title>
-    <link rel="stylesheet" href="<%= request.getContextPath() %>/assets/css/dashboard.css">
+    <link rel="stylesheet" href="../../MegaCityCabSystem_war_exploded/assets/css/cabStyle.css">
+    <link rel="stylesheet" href="../../MegaCityCabSystem_war_exploded/assets/css/dashboard.css">
+    <link rel="stylesheet" href="../../MegaCityCabSystem_war_exploded/assets/css/dashboard-header.css">
 </head>
 <body>
 <jsp:include page="<%= dashboardPage %>"/>
+
 
 <div class="container">
     <h2>Manage Bookings</h2>
@@ -38,7 +44,7 @@
             <th>Dropoff</th>
             <th>Scheduled Time</th>
             <th>Status</th>
-            <th>Assign Driver</th>
+            <th>Assigned Driver ID</th>
             <th>Actions</th>
         </tr>
         <% for (BookingDTO booking : allBookings) { %>
@@ -49,18 +55,7 @@
             <td><%= booking.getDropoffLocation() %></td>
             <td><%= booking.getScheduledTime() %></td>
             <td><%= booking.getBookingStatus() %></td>
-            <td>
-                <form action="<%= request.getContextPath() %>/assignDriver" method="POST">
-                    <input type="hidden" name="booking_id" value="<%= booking.getBookingId() %>">
-                    <select name="driver_id" required>
-                        <option value="">Select Driver</option>
-                        <%-- Populate available drivers dynamically --%>
-                        <option value="1">Driver 1</option>
-                        <option value="2">Driver 2</option>
-                    </select>
-                    <button type="submit">Assign</button>
-                </form>
-            </td>
+            <td><%= booking.getDriverId() %></td>
             <td>
                 <% if ("PENDING".equals(booking.getBookingStatus())) { %>
                 <form action="<%= request.getContextPath() %>/cancelBooking" method="POST">
@@ -78,5 +73,6 @@
 
     <a href="<%= request.getContextPath() %>/views/dashboards/admin-dashboard.jsp">Back to Dashboard</a>
 </div>
+<%@ include file="../dashboards/dashboard-footer.jsp" %>
 </body>
 </html>

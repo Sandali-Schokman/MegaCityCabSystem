@@ -11,7 +11,7 @@ import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet({"/updateAvailability", "/viewDriverAvailability"})
+@WebServlet({"/DriverAvailability"})
 public class DriverAvailabilityServlet extends HttpServlet {
     private DriverAvailabilityService availabilityService = new DriverAvailabilityService();
     private AdminNotifier adminNotifier = new AdminNotifier(); // Observer Pattern
@@ -38,9 +38,9 @@ public class DriverAvailabilityServlet extends HttpServlet {
 
         // Forward to respective dashboard
         if ("ADMIN".equals(role)) {
-            request.getRequestDispatcher("/views/dashboards/admin-dashboard.jsp").forward(request, response);
+            request.getRequestDispatcher("/views/admin/driver-availability.jsp").forward(request, response);
         } else {
-            request.getRequestDispatcher("/views/dashboards/operator-dashboard.jsp").forward(request, response);
+            request.getRequestDispatcher("/views/admin/driver-availability.jsp").forward(request, response);
         }
     }
 
@@ -91,14 +91,14 @@ public class DriverAvailabilityServlet extends HttpServlet {
                 adminNotifier.notifyAdmin(driverId, "OFF");
                 break;
             default:
-                response.sendRedirect(request.getContextPath() + "/views/dashboards/driver-dashboard.jsp?error=Invalid status.");
+                response.sendRedirect(request.getContextPath() + "/views/admin/driver-availability.jsp?error=Invalid status.");
                 return;
         }
 
         if (availabilityService.updateAvailability(driverId, strategy)) {
-            response.sendRedirect(request.getContextPath() + "/views/dashboards/driver-dashboard.jsp?message=Status updated.");
+            response.sendRedirect(request.getContextPath() + "/views/admin/driver-availability.jsp?message=Status updated.");
         } else {
-            response.sendRedirect(request.getContextPath() + "/views/dashboards/driver-dashboard.jsp?error=Failed to update status.");
+            response.sendRedirect(request.getContextPath() + "/views/admin/driver-availability.jsp?error=Failed to update status.");
         }
     }
 }

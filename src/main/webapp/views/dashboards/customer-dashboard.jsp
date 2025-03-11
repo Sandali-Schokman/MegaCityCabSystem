@@ -39,14 +39,13 @@
 
     <div class="dashboard-options">
         <a href="<%= request.getContextPath() %>/views/customer/book-ride.jsp">Book a Ride</a>
-        <a href="<%= request.getContextPath() %>/views/customer/bookings.jsp">My Bookings</a>
-        <a href="#">Ride History</a>
-        <a href="#">Payments</a>
-        <a href="<%= request.getContextPath() %>/views/customer/complaint.jsp">Complaints</a>
+        <a href="<%= request.getContextPath() %>/bookings">My Bookings</a>
+        <a href="<%= request.getContextPath() %>/payment">Payments</a>
+        <a href="<%= request.getContextPath() %>/complaints">Complaints</a>
         <a href="<%= request.getContextPath() %>/views/customer/review.jsp">Review</a>
     </div>
 </div>
-<%@ include file="dashboard-footer.jsp" %>
+
 
 </body>
 </html>

@@ -24,7 +24,9 @@
 <html>
 <head>
     <title>Manual Driver Assignment</title>
-    <link rel="stylesheet" href="../assets/css/login.css">
+  <link rel="stylesheet" href="../../MegaCityCabSystem_war_exploded/assets/css/cabStyle.css">
+  <link rel="stylesheet" href="../../MegaCityCabSystem_war_exploded/assets/css/dashboard.css">
+  <link rel="stylesheet" href="../../MegaCityCabSystem_war_exploded/assets/css/dashboard-header.css">
 </head>
 <body>
 <%-- Include the correct dashboard based on the user role --%>
@@ -70,5 +72,6 @@
     <button type="submit">Assign Driver</button>
   </form>
 </div>
+<%@ include file="../dashboards/dashboard-footer.jsp" %>
 </body>
 </html>

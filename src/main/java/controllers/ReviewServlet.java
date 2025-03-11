@@ -60,17 +60,30 @@ public class ReviewServlet extends HttpServlet {
         }
 
         try {
-            int driverId = Integer.parseInt(request.getParameter("driver_id"));
-            List<ReviewDTO> reviews = reviewService.getDriverReviews(driverId);
-            double avgRating = reviewService.getDriverAverageRating(driverId);
-
+            List<ReviewDTO> reviews = reviewService.getDriverReviews(0); // If you want to display ALL reviews, pass 0 or use a separate method in ReviewDAO
             request.setAttribute("reviews", reviews);
-            request.setAttribute("avgRating", avgRating);
-            request.getRequestDispatcher("/views/admin/driver-reviews.jsp").forward(request, response);
-
-        } catch (NumberFormatException e) {
-            response.sendRedirect(request.getContextPath() + "/views/admin/driver-reviews.jsp?error=Invalid driver ID.");
+        } catch (Exception e) {
+            request.setAttribute("error", "/views/admin/driver-reviews.jsp?error=Invalid driver ID.");
+            e.printStackTrace();
         }
+
+        // Forward to JSP page
+        request.getRequestDispatcher("/views/admin/driver-reviews.jsp").forward(request, response);
+
+
+        // String driver = (request.getParameter("driver_id"));
+           // int driverId = Integer.parseInt(driver);
+           // List<ReviewDTO> reviews = reviewService.getDriverReviews(driverId);
+           // double avgRating = reviewService.getDriverAverageRating(driverId);
+
+          //  request.setAttribute("reviews", reviews);
+          //  request.setAttribute("avgRating", avgRating);
+         //   request.getRequestDispatcher("/views/admin/driver-reviews.jsp").forward(request, response);
+
+       // } catch (NumberFormatException e) {
+       // response.sendRedirect(request.getContextPath() + "/views/admin/driver-reviews.jsp?error=Invalid driver ID.");
+
+       // }
     }
 }
 

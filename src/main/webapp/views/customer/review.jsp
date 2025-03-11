@@ -9,6 +9,12 @@
 <%@ page import="java.util.List, dto.BookingDTO" %>
 
 <%
+  String role = (String) session.getAttribute("role");
+  if (!"CUSTOMER".equals(role)) {
+    response.sendRedirect("../unauthorized.jsp");
+    return;
+  }
+
   String error = request.getParameter("error");
   String message = request.getParameter("message");
   List<BookingDTO> completedBookings = (List<BookingDTO>) request.getAttribute("completedBookings");

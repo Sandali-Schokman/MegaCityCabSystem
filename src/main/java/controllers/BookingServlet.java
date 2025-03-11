@@ -1,6 +1,8 @@
 package controllers;
 
 import dto.BookingDTO;
+import dto.DriverDTO;
+import jakarta.servlet.ServletConfig;
 import services.BookingService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -66,7 +68,7 @@ public class BookingServlet extends HttpServlet {
 
             Timestamp scheduledTime;
             try {
-                SimpleDateFormat dateFormat = new SimpleDateFormat("YYYY-MM-DD HH:MI:SS");
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
                 Date parsedDate = dateFormat.parse(scheduledTimeStr);
                 scheduledTime = new Timestamp(parsedDate.getTime());
             } catch (ParseException e) {
@@ -76,7 +78,7 @@ public class BookingServlet extends HttpServlet {
             }
 
             //Create Booking DTO (Driver ID is 0 initially, assigned later)
-            BookingDTO newBooking = new BookingDTO(0, customerId, 0, pickupLocation, dropoffLocation, scheduledTime, "PENDING", 10.2 , "UNPAID");
+            BookingDTO newBooking = new BookingDTO(0, customerId, 0, pickupLocation, dropoffLocation, scheduledTime, "PENDING", fare2 , "UNPAID");
 
 
             // Call service method to save booking
@@ -93,20 +95,36 @@ public class BookingServlet extends HttpServlet {
         }
     }
 
+    //
+    public void init(ServletConfig config) throws ServletException {
+        super.init(config);
+        System.out.println("booking initialized");
+
+    }
+
+
+
     //Handle GET requests (View Bookings)
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession(false);
+
         if (session == null || session.getAttribute("role") == null) {
             response.sendRedirect(request.getContextPath() + "/views/login.jsp?error=Unauthorized access.");
             return;
         }
 
+        List<BookingDTO> bookings = bookingService.getAllBookings();
+        request.setAttribute("bookings", "bookings");
+
         String role = (String) session.getAttribute("role");
         int userId = (Integer) session.getAttribute("user_id");
+
+        System.out.println("DEBUG: Role - " + role);
 
         // If Customer → Show only their bookings
         if ("CUSTOMER".equals(role)) {
             List<BookingDTO> customerBookings = bookingService.getBookingsByCustomer(userId);
+            System.out.println("DEBUG: Customer has " + customerBookings.size() + " bookings.");
             request.setAttribute("bookings", customerBookings);
             request.getRequestDispatcher("/views/customer/bookings.jsp").forward(request, response);
             return;
@@ -115,6 +133,7 @@ public class BookingServlet extends HttpServlet {
         // If Admin/Manager → Show all bookings
         if ("ADMIN".equals(role) || "MANAGER".equals(role)) {
             List<BookingDTO> allBookings = bookingService.getAllBookings();
+            System.out.println("DEBUG: Admin found " + allBookings.size() + " bookings.");
             request.setAttribute("bookings", allBookings);
             request.getRequestDispatcher("/views/admin/manage-bookings.jsp").forward(request, response);
         }

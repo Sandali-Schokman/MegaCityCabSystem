@@ -9,42 +9,44 @@
 <%@ page import="java.util.List, dto.EarningsDTO" %>
 
 <%
-  List<EarningsDTO> earningsList = (List<EarningsDTO>) request.getAttribute("earningsList");
+  List<EarningsDTO> earningsReport = (List<EarningsDTO>) request.getAttribute("earningsReport");
 %>
 
 <html>
 <head>
     <title>Operator - Earnings Report</title>
-  <link rel="stylesheet" href="../../assets/css/dashboard.css">
+  <link rel="stylesheet" href="../../MegaCityCabSystem_war_exploded/assets/css/cabStyle.css">
+  <link rel="stylesheet" href="../../MegaCityCabSystem_war_exploded/assets/css/dashboard.css">
+  <link rel="stylesheet" href="../../MegaCityCabSystem_war_exploded/assets/css/dashboard-header.css">
 </head>
 <body>
 <%@ include file="../dashboards/operator-dashboard.jsp" %>
 
-<div class="dashboard">
+<div class="container">
   <h2>Earnings Report</h2>
 
+  <% if (earningsReport != null && !earningsReport.isEmpty()) { %>
   <table border="1">
     <tr>
       <th>Driver ID</th>
-      <th>Total Earnings</th>
+      <th>Total Earnings (LKR)</th>
+      <th>Driver Share (LKR)</th>
+      <th>Company Share (LKR)</th>
       <th>Completed Rides</th>
-      <th>Last Payment Date</th>
     </tr>
-
-    <% if (earningsList != null && !earningsList.isEmpty()) { %>
-    <% for (EarningsDTO earnings : earningsList) { %>
+    <% for (EarningsDTO earning : earningsReport) { %>
     <tr>
-      <td><%= earnings.getDriverId() %></td>
-      <td>$<%= earnings.getTotalEarnings() %></td>
-      <td><%= earnings.getCompletedRides() %></td>
-      <td><%= earnings.getLastPaymentDate() %></td>
+      <td><%= earning.getDriverId() %></td>
+      <td>LKR <%= earning.getTotalEarnings() %></td>
+      <td>LKR <%= earning.getDriverEarnings() %></td>
+      <td>LKR <%= earning.getCompanyShare() %></td>
+      <td><%= earning.getCompletedRides() %></td>
     </tr>
-    <% } %>
-    <% } else { %>
-    <tr><td colspan="4">No earnings data available.</td></tr>
     <% } %>
   </table>
-
+  <% } else { %>
+  <p>No earnings data available.</p>
+  <% } %>
   <a href="<%= request.getContextPath() %>/views/dashboards/operator-dashboard.jsp">Back to Dashboard</a>
 </div>
 

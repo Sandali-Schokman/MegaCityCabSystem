@@ -65,5 +65,6 @@
 
   <a href="<%= request.getContextPath() %>/views/dashboards/driver-dashboard.jsp">Back to Dashboard</a>
 </div>
+<%@ include file="../dashboards/dashboard-footer.jsp" %>
 </body>
 </html>

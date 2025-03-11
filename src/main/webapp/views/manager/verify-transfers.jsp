@@ -17,7 +17,9 @@
 <html>
 <head>
   <title>Verify Online Transfers</title>
-  <link rel="stylesheet" href="<%= request.getContextPath() %>/assets/css/dashboard.css">
+  <link rel="stylesheet" href="../../MegaCityCabSystem_war_exploded/assets/css/cabStyle.css">
+  <link rel="stylesheet" href="../../MegaCityCabSystem_war_exploded/assets/css/dashboard.css">
+  <link rel="stylesheet" href="../../MegaCityCabSystem_war_exploded/assets/css/dashboard-header.css">
 </head>
 <body>
 <jsp:include page="../dashboards/admin-dashboard.jsp"/>
@@ -71,5 +73,6 @@
 
   <a href="<%= request.getContextPath() %>/views/dashboards/admin-dashboard.jsp">Back to Dashboard</a>
 </div>
+<%@ include file="../dashboards/dashboard-footer.jsp" %>
 </body>
 </html>

@@ -7,7 +7,7 @@
 --%>
 
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" language="java" %>
-<%@ page import="utils.SessionUtils, java.util.List, dto.DriverDTO" %>
+<%@ page import="utils.SessionUtils" %>
 
 <jsp:include page="../session-check.jsp"/>
 
@@ -18,10 +18,7 @@
         return;
     }
 
-    List<DriverDTO> drivers = (List<DriverDTO>) request.getAttribute("drivers");
 %>
-
-
 <html>
 <head>
     <title>admin-dashboard</title>
@@ -35,43 +32,16 @@
 
     <div class="dashboard-options">
         <a href="#">Manage Users</a>
-        <a href="../admin/manual-driver-assignment.jsp">Assign Drivers</a>
-        <a href="<%= request.getContextPath()%>/views/admin/manage-bookings.jsp">Manage Bookings</a>
-        <a href="<%= request.getContextPath() %>/viewDriverAvailability">Track Driver Availability</a>
-        <a href="../admin/earnings-report.jsp">Earnings Report</a>
-        <a href="#">View Reports</a>
-        <a href="<%= request.getContextPath() %>/views/admin/booking-trends.jsp">Booking Trends Report</a>
-        <a href="<%= request.getContextPath() %>/views/manager/driver-performance.jsp">Driver Performance Report</a>
-        <a href="<%= request.getContextPath() %>/views/admin/manage-complaints.jsp">Manage Complaints</a>
-        <a href="<%= request.getContextPath() %>/views/admin/driver-reviews.jsp">Driver Reviews & Ratings</a>
-        <a href="#">System Logs</a>
+        <a href="<%= request.getContextPath()%>/assignManualDriver">Assign Drivers</a>
+        <a href="<%= request.getContextPath()%>/booking">Manage Bookings</a>
+        <a href="<%= request.getContextPath() %>/DriverAvailability">Track Driver Availability</a>
+        <a href="<%= request.getContextPath() %>/earningsReport">Earnings Report</a>
+        <a href="<%= request.getContextPath() %>/bookingTrends">Booking Trends Report</a>
+        <a href="<%= request.getContextPath() %>/performanceReport">Driver Performance Report</a>
+        <a href="<%= request.getContextPath() %>/complaints">Manage Complaints</a>
+        <a href="<%= request.getContextPath() %>/review">Driver Reviews & Ratings</a>
     </div>
 
-    <div>
-    <h2>Driver Availability</h2>
-    <table border="1">
-        <tr>
-            <th>Driver ID</th>
-            <th>User ID</th>
-            <th>Car ID</th>
-            <th>Availability</th>
-            <th>Total Earnings</th>
-        </tr>
-        <% if (drivers != null && !drivers.isEmpty()) { %>
-        <% for (DriverDTO driver : drivers) { %>
-        <tr>
-            <td><%= driver.getDriverId() %></td>
-            <td><%= driver.getUserId() %></td>
-            <td><%= driver.getCarId() %></td>
-            <td><%= driver.getAvailability() %></td>
-            <td>$<%= driver.getTotalEarnings() %></td>
-        </tr>
-        <% } %>
-        <% } else { %>
-        <tr><td colspan="5">No drivers found.</td></tr>
-        <% } %>
-    </table>
-    </div>
     <div>
         <h2>Set Commission Percentage</h2>
         <form action="<%= request.getContextPath() %>/updateCommission" method="POST">
@@ -82,7 +52,7 @@
 
     </div>
 </div>
-<%@ include file="dashboard-footer.jsp" %>
+
 
 </body>
 </html>

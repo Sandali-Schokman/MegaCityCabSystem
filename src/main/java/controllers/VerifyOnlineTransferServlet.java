@@ -27,6 +27,11 @@ public class VerifyOnlineTransferServlet extends HttpServlet {
 
             boolean updated = paymentService.verifyOnlineTransfer(paymentId, status);
 
+            String role = (String) session.getAttribute("role");
+            String redirectPage = "ADMIN".equals(role)
+                    ? "/views/admin/verify-transfers.jsp"
+                    : "/views/manager/verify-transfers.jsp";
+
             if (updated) {
                 response.sendRedirect(request.getContextPath() + "/views/manager/verify-transfers.jsp?message=Online transfer verification updated.");
             } else {
@@ -36,4 +41,10 @@ public class VerifyOnlineTransferServlet extends HttpServlet {
             response.sendRedirect(request.getContextPath() + "/views/admin/verify-transfers.jsp?error=Invalid input.");
         }
     }
+
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        response.sendRedirect(request.getContextPath() + "/views/manager/verify-transfers.jsp");
+    }
+
 }

@@ -28,51 +28,21 @@
 <%@ include file="dashboard-header.jsp" %>
 
 <div class="dashboard">
-    <h1>Operator Dashboard</h1>
+    <h1>Manager Dashboard</h1>
     <p>Manage bookings, assign drivers, and resolve complaints.</p>
 
     <div class="dashboard-options">
-        <a href="<%= request.getContextPath()%>/views/admin/manage-bookings.jsp">Manage Bookings</a>
+        <a href="<%= request.getContextPath()%>/booking">Manage Bookings</a>
         <a href="<%= request.getContextPath() %>/views/manager/register-driver.jsp">Register Driver</a>
-        <a href="<%= request.getContextPath() %>/views/admin/manual-driver-assignment.jsp">Assign Drivers</a>
-        <a href="<%= request.getContextPath() %>/viewDriverAvailability">Track Driver Availability</a>
-        <a href="../manager/earnings-report.jsp">Earnings Report</a>
+        <a href="<%= request.getContextPath() %>/assignManualDriver">Assign Drivers</a>
+        <a href="<%= request.getContextPath() %>/DriverAvailability">Track Driver Availability</a>
         <a href="<%= request.getContextPath() %>/earningsReport">Earnings Report</a>
-        <a href="<%= request.getContextPath() %>/views/manager/verify-transfers.jsp">Verify Online Transfers</a>
-        <a href="#">View Reports</a>
-        <a href="<%= request.getContextPath() %>/views/admin/booking-trends.jsp">Booking Trends Report</a>
-        <a href="<%= request.getContextPath() %>/views/manager/driver-performance.jsp">Driver Performance Report</a>
-        <a href="<%= request.getContextPath() %>/views/admin/manage-complaints.jsp">Manage Complaints</a>
-        <a href="<%= request.getContextPath() %>/views/admin/driver-reviews.jsp">Driver Reviews & Ratings</a>
-        <a href="#">Handle Complaints</a>
-        <a href="#">Verify Payments</a>
+        <a href="<%= request.getContextPath() %>/verifyOnlineTransfer">Verify Online Transfers</a>
+        <a href="<%= request.getContextPath() %>/bookingTrends">Booking Trends Report</a>
+        <a href="<%= request.getContextPath() %>/performanceReport">Driver Performance Report</a>
+        <a href="<%= request.getContextPath() %>/complaints">Manage Complaints</a>
+        <a href="<%= request.getContextPath() %>/review">Driver Reviews & Ratings</a>
     </div>
-
-    <h2>Driver Availability</h2>
-    <table border="1">
-        <tr>
-            <th>Driver ID</th>
-            <th>User ID</th>
-            <th>Car ID</th>
-            <th>Availability</th>
-            <th>Total Earnings</th>
-        </tr>
-        <% if (drivers != null && !drivers.isEmpty()) { %>
-        <% for (DriverDTO driver : drivers) { %>
-        <tr>
-            <td><%= driver.getDriverId() %></td>
-            <td><%= driver.getUserId() %></td>
-            <td><%= driver.getCarId() %></td>
-            <td><%= driver.getAvailability() %></td>
-            <td>$<%= driver.getTotalEarnings() %></td>
-        </tr>
-        <% } %>
-        <% } else { %>
-        <tr><td colspan="5">No drivers found.</td></tr>
-        <% } %>
-    </table>
 </div>
-<%@ include file="dashboard-footer.jsp" %>
-
 </body>
 </html>

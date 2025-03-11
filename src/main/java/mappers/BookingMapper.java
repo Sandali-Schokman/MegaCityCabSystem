@@ -44,4 +44,23 @@ public class BookingMapper {
                 .setCompletionTime(dto.getCompletionTime())
                 .build();
     }
+
+    // Convert DTO to Model using Builder Pattern
+    public static Booking toModel(BookingDTO dto) {
+        return new Booking.BookingBuilder()
+                .setBookingId(dto.getBookingId())
+                .setCustomerId(dto.getCustomerId())
+                .setDriverId(dto.getDriverId())
+                .setPickupLocation(dto.getPickupLocation())
+                .setDropoffLocation(dto.getDropoffLocation())
+                .setScheduledTime(dto.getScheduledTime())
+                .setBookingStatus(dto.getBookingStatus())
+                .setFare(dto.getFare())
+                .setPaymentStatus(dto.getPaymentStatus())
+                .setAssignedBy(dto.getAssignedBy())
+                .setAssignedByUser(dto.getAssignedByUser())
+                .setAssignedTime(dto.getAssignedTime())
+                .setCompletionTime(dto.getCompletionTime())
+                .build();
+    }
 }

@@ -21,7 +21,9 @@
 <html>
 <head>
   <title>Booking Trends Report</title>
-  <link rel="stylesheet" href="<%= request.getContextPath() %>/assets/css/dashboard.css">
+  <link rel="stylesheet" href="../../MegaCityCabSystem_war_exploded/assets/css/cabStyle.css">
+  <link rel="stylesheet" href="../../MegaCityCabSystem_war_exploded/assets/css/dashboard.css">
+  <link rel="stylesheet" href="../../MegaCityCabSystem_war_exploded/assets/css/dashboard-header.css">
 </head>
 <body>
 
@@ -54,6 +56,6 @@
 
   <a href="<%= request.getContextPath() %>/views/dashboards/admin-dashboard.jsp">Back to Dashboard</a>
 </div>
-
+<%@ include file="../dashboards/dashboard-footer.jsp" %>
 </body>
 </html>

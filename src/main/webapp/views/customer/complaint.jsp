@@ -23,10 +23,10 @@
 <html>
 <head>
   <title>Submit a Complaint</title>
-  <link rel="stylesheet" href="../../assets/css/dashboard.css">
+  <link rel="stylesheet" href="../../MegaCityCabSystem_war_exploded/assets/css/dashboard.css">
 </head>
 <body>
-<%@ include file="../dashboards/dashboard-header.jsp" %>
+<jsp:include page="../dashboards/customer-dashboard.jsp"/>
 
 <div class="container">
   <h2>Submit a Complaint</h2>

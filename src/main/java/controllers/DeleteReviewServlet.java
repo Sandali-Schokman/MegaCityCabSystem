@@ -16,7 +16,7 @@ public class DeleteReviewServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession(false);
 
-        // ✅ Check Admin or Manager Role
+        // Check Admin or Manager Role
         if (session == null || session.getAttribute("role") == null ||
                 (!"ADMIN".equals(session.getAttribute("role")) && !"MANAGER".equals(session.getAttribute("role")))) {
             response.sendRedirect(request.getContextPath() + "/views/login.jsp?error=Unauthorized access.");

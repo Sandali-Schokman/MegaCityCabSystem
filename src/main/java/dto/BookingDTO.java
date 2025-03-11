@@ -47,9 +47,9 @@ public class BookingDTO {
         this.pickupLocation = pickupLocation;
         this.dropoffLocation = dropoffLocation;
         this.scheduledTime = scheduledTime;
-        this.bookingStatus = bookingStatus;
+        this.bookingStatus = pending;
         this.fare = fare;
-        this.paymentStatus = paymentStatus;
+        this.paymentStatus = unpaid;
     }
 
     // Getters

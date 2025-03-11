@@ -2,8 +2,11 @@ package dao;
 
 import config.DatabaseConnection;
 import dto.BookingDTO;
+import dto.DriverDTO;
 import mappers.BookingMapper;
+import mappers.DriverMapper;
 import models.Booking;
+import models.Driver;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -70,11 +73,14 @@ public class BookingDAO {
              ResultSet rs = stmt.executeQuery()) {
 
             while (rs.next()) {
-                bookings.add(BookingMapper.toDTO(mapResultSetToBooking(rs)));
+                BookingDTO booking = BookingMapper.toDTO(mapResultSetToBooking(rs));
+                System.out.println("DEBUG: Found Booking - ID: " + booking.getBookingId() + ", Status: " + booking.getBookingStatus());
+                bookings.add(booking);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        System.out.println("DEBUG: Total Bookings Retrieved: " + bookings.size());
         return bookings;
     }
 
@@ -235,6 +241,35 @@ public class BookingDAO {
             e.printStackTrace();
         }
         return 50.00; // Default per-km rate if not found
+    }
+
+    // Get bookings by Driver ID
+    public List<BookingDTO> getBookingsByDriverId(int driverId) {
+        List<BookingDTO> bookings = new ArrayList<>();
+        String query = "SELECT * FROM bookings WHERE driver_id = ?";
+
+        try (Connection conn = DatabaseConnection.getInstance().getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+
+            stmt.setInt(1, driverId);
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                Booking booking = new Booking.BookingBuilder()
+                        .setBookingId(rs.getInt("booking_id"))
+                        .setCustomerId(rs.getInt("customer_id"))
+                        .setDriverId(rs.getInt("driver_id"))
+                        .setPickupLocation(rs.getString("pickup_location"))
+                        .setDropoffLocation(rs.getString("dropoff_location"))
+                        .setScheduledTime(rs.getTimestamp("scheduled_time"))
+                        .setDriverId(rs.getInt("driver_id"))
+                        .build();
+                bookings.add(BookingMapper.toDTO(booking));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return bookings;
     }
 
 
