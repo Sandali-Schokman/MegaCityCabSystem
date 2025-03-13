@@ -91,14 +91,14 @@ public class DriverAvailabilityServlet extends HttpServlet {
                 adminNotifier.notifyAdmin(driverId, "OFF");
                 break;
             default:
-                response.sendRedirect(request.getContextPath() + "/views/admin/driver-availability.jsp?error=Invalid status.");
+                response.sendRedirect(request.getContextPath() + "/views/dashboards/driver-dashboard.jsp?error=Invalid status.");
                 return;
         }
 
         if (availabilityService.updateAvailability(driverId, strategy)) {
-            response.sendRedirect(request.getContextPath() + "/views/admin/driver-availability.jsp?message=Status updated.");
+            response.sendRedirect(request.getContextPath() + "/views/dashboards/driver-dashboard.jsp?message=Status updated.");
         } else {
-            response.sendRedirect(request.getContextPath() + "/views/admin/driver-availability.jsp?error=Failed to update status.");
+            response.sendRedirect(request.getContextPath() + "/views/dashboards/driver-dashboard.jsp?error=Failed to update status.");
         }
     }
 }

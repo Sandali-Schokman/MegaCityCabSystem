@@ -18,12 +18,15 @@
   }
 
   List<BookingDTO> completedBookings = (List<BookingDTO>) request.getAttribute("completedBookings");
+  System.out.println("JSP: " + completedBookings.size());
 %>
 
 <html>
 <head>
   <title>Submit a Complaint</title>
+  <link rel="stylesheet" href="../../MegaCityCabSystem_war_exploded/assets/css/cabStyle.css">
   <link rel="stylesheet" href="../../MegaCityCabSystem_war_exploded/assets/css/dashboard.css">
+  <link rel="stylesheet" href="../../MegaCityCabSystem_war_exploded/assets/css/dashboard-header.css">
 </head>
 <body>
 <jsp:include page="../dashboards/customer-dashboard.jsp"/>

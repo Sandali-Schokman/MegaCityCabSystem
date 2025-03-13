@@ -82,6 +82,10 @@ public class BookingService {
         return bookingDAO.endBookingByDriver(bookingId, driverId);
     }
 
+    // Get completed bookings for a specific customer (used for complaints)
+    public List<BookingDTO> getCompletedBookingsByCustomer(int customerId) {
+        return bookingDAO.getCompletedBookingsByCustomer(customerId);
+    }
 
 }
 

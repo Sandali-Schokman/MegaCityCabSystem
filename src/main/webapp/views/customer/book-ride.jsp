@@ -12,10 +12,9 @@
 <head>
     <meta charset="UTF-8">
     <title>Book a Ride</title>
-    <link rel="stylesheet" href="../../assets/css/booking.css">
-    <link rel="stylesheet" href="../../assets/css/cabStyle.css">
-    <link rel="stylesheet" href="../../assets/css/dashboard.css">
-    <link rel="stylesheet" href="../../assets/css/dashboard-header.css">
+    <link rel="stylesheet" href="../../MegaCityCabSystem_war_exploded/assets/css/cabStyle.css">
+    <link rel="stylesheet" href="../../MegaCityCabSystem_war_exploded/assets/css/dashboard.css">
+    <link rel="stylesheet" href="../../MegaCityCabSystem_war_exploded/assets/css/dashboard-header.css">
 </head>
 <body>
 <div>
@@ -31,6 +30,7 @@
     <p class="success-msg"><%= request.getParameter("message") %></p>
     <% } %>
 
+    <div class="container">
     <%-- Fare Calculation Form --%>
     <form action="<%= request.getContextPath() %>/calculateFare" method="POST" id="one">
         <label>Pickup Location</label>
@@ -51,7 +51,9 @@
     <% if (request.getAttribute("calculatedFare") != null) { %>
     <p><strong>Estimated Fare:</strong> LKR <%= request.getAttribute("calculatedFare") %></p>
     <% } %>
+    </div>
 
+    <div class="container">
     <%-- Booking Confirmation Form --%>
     <form action="<%= request.getContextPath() %>/booking" method="POST">
         <input type="hidden" name="pickup_location" value="<%= request.getAttribute("pickup") != null ? request.getAttribute("pickup") : "" %>">
@@ -62,7 +64,7 @@
 
         <button type="submit">Confirm Booking</button>
     </form>
-
+    </div>
     <a href="<%= request.getContextPath() %>/views/dashboards/customer-dashboard.jsp">Back to Dashboard</a>
 </div>
 <script>

@@ -24,7 +24,8 @@ public class ReviewDAO {
     public boolean addReview(ReviewDTO reviewDTO) {
         String query = "INSERT INTO reviews (booking_id, customer_id, driver_id, rating, feedback) VALUES (?, ?, ?, ?, ?)";
 
-        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+        try (Connection con = DatabaseConnection.getInstance().getConnection();
+                PreparedStatement stmt = con.prepareStatement(query)) {
             stmt.setInt(1, reviewDTO.getBookingId());
             stmt.setInt(2, reviewDTO.getCustomerId());
             stmt.setInt(3, reviewDTO.getDriverId());
@@ -43,7 +44,8 @@ public class ReviewDAO {
         List<ReviewDTO> reviews = new ArrayList<>();
         String query = "SELECT * FROM reviews WHERE driver_id = ? ORDER BY review_date DESC";
 
-        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+        try (Connection con = DatabaseConnection.getInstance().getConnection();
+                PreparedStatement stmt = con.prepareStatement(query)) {
             stmt.setInt(1, driverId);
             ResultSet rs = stmt.executeQuery();
 
@@ -94,4 +96,29 @@ public class ReviewDAO {
         return false;
     }
 
+    public List<ReviewDTO> getAllReviews() {
+        List<ReviewDTO> reviews = new ArrayList<>();
+        String query = "SELECT * FROM reviews ORDER BY review_date DESC";
+
+        try (Connection con = DatabaseConnection.getInstance().getConnection();
+             PreparedStatement stmt = con.prepareStatement(query)) {
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                Review review = new Review(
+                        rs.getInt("review_id"),
+                        rs.getInt("booking_id"),
+                        rs.getInt("customer_id"),
+                        rs.getInt("driver_id"),
+                        rs.getInt("rating"),
+                        rs.getString("feedback"),
+                        rs.getTimestamp("review_date")
+                );
+                reviews.add(ReviewMapper.toDTO(review));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return reviews;
+    }
 }

@@ -314,6 +314,41 @@ public class BookingDAO {
         return false;
     }
 
+    public List<BookingDTO> getCompletedBookingsByCustomer(int customerId) {
+        List<BookingDTO> bookings = new ArrayList<>();
 
+        String query = "SELECT * FROM bookings WHERE customer_id = ? AND booking_status = 'COMPLETED'";
+
+        try (Connection conn = DatabaseConnection.getInstance().getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setInt(1, customerId);
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                // Using Builder Pattern to build Booking entity
+                Booking booking = new Booking.BookingBuilder()
+                        .bookingId(rs.getInt("booking_id"))
+                        .customerId(rs.getInt("customer_id"))
+                        .driverId(rs.getInt("driver_id"))
+                        .pickupLocation(rs.getString("pickup_location"))
+                        .dropoffLocation(rs.getString("dropoff_location"))
+                        .scheduledTime(rs.getTimestamp("scheduled_time"))
+                        .bookingStatus(rs.getString("booking_status"))
+                        .fare(rs.getDouble("fare"))
+                        .paymentStatus(rs.getString("payment_status"))
+                        .assignedTime(rs.getTimestamp("assigned_time"))
+                        .completionTime(rs.getTimestamp("completion_time"))
+                        .assignedBy(rs.getString("assigned_by"))
+                        .assignedByUser(rs.getInt("assigned_by_user"))
+                        .build();
+
+                bookings.add(BookingMapper.toDTO(booking));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return bookings;
+    }
 
 }

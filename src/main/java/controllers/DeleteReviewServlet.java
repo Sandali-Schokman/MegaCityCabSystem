@@ -28,12 +28,12 @@ public class DeleteReviewServlet extends HttpServlet {
             boolean isDeleted = reviewService.deleteReview(reviewId);
 
             if (isDeleted) {
-                response.sendRedirect(request.getContextPath() + "/driverReviews?message=Review deleted successfully.");
+                response.sendRedirect(request.getContextPath() + "/review?action=admin_view&message=Review deleted successfully.");
             } else {
-                response.sendRedirect(request.getContextPath() + "/driverReviews?error=Failed to delete review.");
+                response.sendRedirect(request.getContextPath() + "/review?action=admin_view&Failed to delete review.");
             }
         } catch (NumberFormatException e) {
-            response.sendRedirect(request.getContextPath() + "/driverReviews?error=Invalid review ID.");
+            response.sendRedirect(request.getContextPath() + "/review?action=admin_view&error=Invalid review ID.");
         }
     }
 }

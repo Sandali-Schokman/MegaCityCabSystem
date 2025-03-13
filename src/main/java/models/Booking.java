@@ -71,6 +71,71 @@ public class Booking {
         private Timestamp assignedTime;
         private Timestamp completionTime;
 
+        public BookingBuilder bookingId(int bookingId) {
+            this.bookingId = bookingId;
+            return this;
+        }
+
+        public BookingBuilder customerId(int customerId) {
+            this.customerId = customerId;
+            return this;
+        }
+
+        public BookingBuilder driverId(Integer driverId) {
+            this.driverId = driverId;
+            return this;
+        }
+
+        public BookingBuilder pickupLocation(String pickupLocation) {
+            this.pickupLocation = pickupLocation;
+            return this;
+        }
+
+        public BookingBuilder dropoffLocation(String dropoffLocation) {
+            this.dropoffLocation = dropoffLocation;
+            return this;
+        }
+
+        public BookingBuilder scheduledTime(Timestamp scheduledTime) {
+            this.scheduledTime = scheduledTime;
+            return this;
+        }
+
+        public BookingBuilder bookingStatus(String bookingStatus) {
+            this.bookingStatus = bookingStatus;
+            return this;
+        }
+
+        public BookingBuilder fare(double fare) {
+            this.fare = fare;
+            return this;
+        }
+
+        public BookingBuilder paymentStatus(String paymentStatus) {
+            this.paymentStatus = paymentStatus;
+            return this;
+        }
+
+        public BookingBuilder assignedTime(Timestamp assignedTime) {
+            this.assignedTime = assignedTime;
+            return this;
+        }
+
+        public BookingBuilder completionTime(Timestamp completionTime) {
+            this.completionTime = completionTime;
+            return this;
+        }
+
+        public BookingBuilder assignedBy(String assignedBy) {
+            this.assignedBy = assignedBy;
+            return this;
+        }
+
+        public BookingBuilder assignedByUser(Integer assignedByUser) {
+            this.assignedByUser = assignedByUser;
+            return this;
+        }
+
         public BookingBuilder setBookingId(int bookingId) {
             this.bookingId = bookingId;
             return this;

@@ -21,6 +21,7 @@ public class RegisterServlet extends HttpServlet {
         String phone = request.getParameter("phone");
         String address = request.getParameter("address");
 
+        System.out.println("Password: " + password + " Confirm Password: " + confirmPassword);
         if (!password.equals(confirmPassword)) {
             request.setAttribute("error", "Passwords do not match!");
             request.getRequestDispatcher("webapp/views/register.jsp").forward(request, response);

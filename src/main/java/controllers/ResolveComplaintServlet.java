@@ -33,16 +33,16 @@ public class ResolveComplaintServlet extends HttpServlet {
         try {
             complaintId = Integer.parseInt(request.getParameter("complaint_id"));
         } catch (NumberFormatException e) {
-            response.sendRedirect(request.getContextPath() + "/views/admin/manage-complaints.jsp?error=Invalid complaint ID.");
+            response.sendRedirect(request.getContextPath() + "/resolveComplaint?error=Invalid complaint ID.");
             return;
         }
 
         // Mark complaint as resolved
         boolean success = complaintService.resolveComplaint(complaintId);
         if (success) {
-            response.sendRedirect(request.getContextPath() + "/views/admin/manage-complaints.jsp?message=Complaint resolved successfully.");
+            response.sendRedirect(request.getContextPath() + "/complaints?action=view&message=Complaint resolved successfully.");
         } else {
-            response.sendRedirect(request.getContextPath() + "/views/admin/manage-complaints.jsp?error=Failed to resolve complaint.");
+            response.sendRedirect(request.getContextPath() + "/complaints?action=view&error=Failed to resolve complaint.");
         }
     }
 }

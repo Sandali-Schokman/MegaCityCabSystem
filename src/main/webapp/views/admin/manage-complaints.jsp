@@ -57,7 +57,7 @@
     <tr>
       <td><%= complaint.getComplaintId() %></td>
       <td><%= complaint.getCustomerName() %></td>
-      <td>#<%= complaint.getBookingId() %></td>
+      <td><%= complaint.getBookingId() %></td>
       <td><%= complaint.getComplaintText() %></td>
       <td><%= complaint.getStatus() %></td>
       <td>
@@ -77,7 +77,7 @@
   <p>No pending complaints available.</p>
   <% } %>
 
-  <a href="<%= request.getContextPath() %>/views/dashboards/admin-dashboard.jsp">Back to Dashboard</a>
+  <a href="<%= request.getContextPath() %>/views/dashboards/<%= "ADMIN".equals(role) ? "admin-dashboard.jsp" : "operator-dashboard.jsp" %>">Back to Dashboard</a>
 </div>
 <%@ include file="../dashboards/dashboard-footer.jsp" %>
 </body>

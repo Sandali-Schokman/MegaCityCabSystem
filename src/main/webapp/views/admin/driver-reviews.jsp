@@ -100,7 +100,7 @@
   <p>No reviews found.</p>
   <% } %>
 
-  <a href="<%= request.getContextPath() %>/views/dashboards/admin-dashboard.jsp">Back to Dashboard</a>
+  <a href="<%= request.getContextPath() %>/views/dashboards/<%= "ADMIN".equals(role) ? "admin-dashboard.jsp" : "operator-dashboard.jsp" %>">Back to Dashboard</a>
 </div>
 <%@ include file="../dashboards/dashboard-footer.jsp" %>
 </body>

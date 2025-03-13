@@ -58,5 +58,7 @@
     </table>
     <% } %>
 </div>
+
+<a href="<%= request.getContextPath() %>/views/dashboards/<%= "ADMIN".equals(role) ? "admin-dashboard.jsp" : "operator-dashboard.jsp" %>">Back to Dashboard</a>
 </body>
 </html>

@@ -41,7 +41,7 @@
         <a href="<%= request.getContextPath() %>/views/customer/book-ride.jsp">Book a Ride</a>
         <a href="<%= request.getContextPath() %>/booking">My Bookings</a>
         <a href="<%= request.getContextPath() %>/complaints?action=add">Complaints</a>
-        <a href="<%= request.getContextPath() %>/views/customer/review.jsp">Review</a>
+        <a href="<%= request.getContextPath() %>/review?action=review">Review</a>
     </div>
 </div>
 

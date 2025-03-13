@@ -37,7 +37,7 @@
 <section class="hero">
     <h1>Reliable Cab Service in Colombo</h1>
     <p>Book a ride instantly and travel with ease.</p>
-    <a href="../views/login.jsp" class="btn">Book Now</a>
+    <a href="customer/book-ride.jsp" class="btn">Book Now</a>
 </section>
 
 <section class="features" id="services">

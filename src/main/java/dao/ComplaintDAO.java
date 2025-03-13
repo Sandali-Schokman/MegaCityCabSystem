@@ -30,7 +30,7 @@ public class ComplaintDAO {
     // Retrieve all complaints
     public List<ComplaintDTO> getAllComplaints() {
         List<ComplaintDTO> complaints = new ArrayList<>();
-        String query = "SELECT c.complaint_id, c.customer_id, u.full_name AS customer_name, c.booking_id, c.complaint_text, c.status " +
+        String query = "SELECT c.complaint_id, c.customer_id, u.full_name AS customer_name, c.booking_id, c.complaint_text, c.status, c.submitted_at " +
                 "FROM complaints c " +
                 "JOIN users u ON c.customer_id = u.user_id " +
                 "ORDER BY c.submitted_at DESC";

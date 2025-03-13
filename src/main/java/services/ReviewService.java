@@ -16,7 +16,11 @@ public class ReviewService {
 
     // Get reviews for a driver
     public List<ReviewDTO> getDriverReviews(int driverId) {
-        return reviewDAO.getReviewsByDriverId(driverId);
+        if(driverId == 0){
+            return reviewDAO.getAllReviews();
+        }
+        else
+         return reviewDAO.getReviewsByDriverId(driverId);
     }
 
     // Get average rating for a driver
