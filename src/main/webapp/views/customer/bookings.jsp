@@ -15,7 +15,9 @@
 <html>
 <head>
   <title>My Bookings</title>
-  <link rel="stylesheet" href="<%= request.getContextPath() %>/assets/css/dashboard.css">
+  <link rel="stylesheet" href="../../MegaCityCabSystem_war_exploded/assets/css/cabStyle.css">
+  <link rel="stylesheet" href="../../MegaCityCabSystem_war_exploded/assets/css/dashboard.css">
+  <link rel="stylesheet" href="../../MegaCityCabSystem_war_exploded/assets/css/dashboard-header.css">
 </head>
 <body>
 <jsp:include page="../dashboards/customer-dashboard.jsp"/>
@@ -33,6 +35,8 @@
       <th>Status</th>
       <th>Fare ($)</th>
       <th>Payment Status</th>
+      <th>Action</th>
+      <th>Action</th>
     </tr>
     <% for (BookingDTO booking : bookings) { %>
     <tr>
@@ -43,6 +47,21 @@
       <td><%= booking.getBookingStatus() %></td>
       <td>$<%= booking.getFare() %></td>
       <td><%= booking.getPaymentStatus() %></td>
+      <td>
+        <form action="<%= request.getContextPath() %>/views/customer/payment.jsp" method="post">
+          <input type="hidden" name="booking_id" value='<%=booking.getBookingId()%>'>
+          <input type="hidden" name="fare" value='<%=booking.getFare()%>'>
+
+          <input type="submit" value="Pay">
+        </form>
+      </td>
+      <td>
+        <form action="<%= request.getContextPath()%>/views/customer/review.jsp" method="post">
+          <input type="hidden" name="booking_id" value='<%=booking.getBookingId()%>'>
+          <input type="hidden" name="driver_id" value='<%=booking.getDriverId()%>'>
+          <input type="submit" value="review">
+        </form>
+      </td>
     </tr>
     <% } %>
   </table>

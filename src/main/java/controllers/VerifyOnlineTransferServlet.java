@@ -1,5 +1,6 @@
 package controllers;
 
+import dto.PaymentDTO;
 import services.PaymentService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -8,6 +9,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.List;
 
 @WebServlet("/verifyOnlineTransfer")
 public class VerifyOnlineTransferServlet extends HttpServlet {
@@ -28,23 +30,29 @@ public class VerifyOnlineTransferServlet extends HttpServlet {
             boolean updated = paymentService.verifyOnlineTransfer(paymentId, status);
 
             String role = (String) session.getAttribute("role");
-            String redirectPage = "ADMIN".equals(role)
-                    ? "/views/admin/verify-transfers.jsp"
-                    : "/views/manager/verify-transfers.jsp";
+            String redirectPage = "ADMIN".equals(session.getAttribute("role"))
+                    ? "/verifyOnlineTransfer?message=Updated"
+                    : "/verifyOnlineTransfer?message=Updated";
 
-            if (updated) {
-                response.sendRedirect(request.getContextPath() + "/views/manager/verify-transfers.jsp?message=Online transfer verification updated.");
-            } else {
-                response.sendRedirect(request.getContextPath() + "/views/manager/verify-transfers.jsp?error=Verification update failed.");
-            }
+            response.sendRedirect(request.getContextPath() + "/views/manager/verify-transfers.jsp");
+
         } catch (NumberFormatException e) {
-            response.sendRedirect(request.getContextPath() + "/views/admin/verify-transfers.jsp?error=Invalid input.");
+            response.sendRedirect(request.getContextPath() + "/verifyOnlineTransfer?error=Invalid input");
         }
     }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        response.sendRedirect(request.getContextPath() + "/views/manager/verify-transfers.jsp");
+        HttpSession session = request.getSession(false);
+        if (session == null || session.getAttribute("role") == null ||
+                (!"ADMIN".equals(session.getAttribute("role")) && !"MANAGER".equals(session.getAttribute("role")))) {
+            response.sendRedirect(request.getContextPath() + "/views/login.jsp?error=Unauthorized access.");
+            return;
+        }
+
+        List<PaymentDTO> payments = paymentService.getPendingBankTransfersForVerification();
+        request.setAttribute("payments", payments);
+        request.getRequestDispatcher("/views/manager/verify-transfers.jsp").forward(request, response);
     }
 
 }

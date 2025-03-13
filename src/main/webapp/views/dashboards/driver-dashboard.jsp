@@ -60,7 +60,5 @@
     </div>
 
 </div>
-<%@ include file="dashboard-footer.jsp" %>
-
 </body>
 </html>

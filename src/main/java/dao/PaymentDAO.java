@@ -67,7 +67,7 @@ public class PaymentDAO {
 
     public List<PaymentDTO> getPendingCashPaymentsForDriver(int driverId) {
         List<PaymentDTO> pendingPayments = new ArrayList<>();
-        String query = "SELECT p.* FROM payments p INNER JOIN bookings b ON p.booking_id = b.booking_id WHERE b.driver_id = ? AND p.method = 'CASH' AND p.verified_by_driver = 'NO';";
+        String query = "SELECT p.* FROM payments p INNER JOIN bookings b ON p.booking_id = b.booking_id INNER JOIN users u ON u.user_id WHERE u.user_id = ? AND p.method = 'CASH' AND p.verified_by_driver = 'NO';";
         System.out.println("Driver ID: " + driverId);
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
             stmt.setInt(1, driverId);
@@ -96,4 +96,33 @@ public class PaymentDAO {
 
         return pendingPayments;
     }
+
+    public List<PaymentDTO> getPendingBankTransfersForVerification() {
+        List<PaymentDTO> payments = new ArrayList<>();
+        String query = "SELECT * FROM payments WHERE method = 'BANK_TRANSFER' AND verification_status = 'PENDING'";
+
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                Payment payment = new Payment(
+                        rs.getInt("payment_id"),
+                        rs.getInt("booking_id"),
+                        rs.getDouble("amount"),
+                        rs.getString("method"),
+                        rs.getString("payment_status"),
+                        rs.getTimestamp("payment_date"),
+                        rs.getString("verified_by_driver"),
+                        rs.getString("verification_status"),
+                        rs.getDouble("driver_earnings"),
+                        rs.getDouble("company_share")
+                );
+                payments.add(PaymentMapper.toDTO(payment));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return payments;
+    }
+
 }

@@ -12,6 +12,12 @@
   String error = request.getParameter("error");
   String message = request.getParameter("message");
   List<PaymentDTO> payments = (List<PaymentDTO>) request.getAttribute("payments");
+  String role = (String) session.getAttribute("role");
+  String dashboardPage = "../dashboards/admin-dashboard.jsp"; // Default to Admin
+
+  if ("MANAGER".equals(role)) {
+    dashboardPage = "../dashboards/operator-dashboard.jsp"; // Change to Manager's dashboard
+  }
 %>
 
 <html>
@@ -22,7 +28,7 @@
   <link rel="stylesheet" href="../../MegaCityCabSystem_war_exploded/assets/css/dashboard-header.css">
 </head>
 <body>
-<jsp:include page="../dashboards/admin-dashboard.jsp"/>
+<jsp:include page="<%= dashboardPage %>"/>
 
 <div class="container">
   <h2>Verify Online Bank Transfers</h2>
@@ -71,7 +77,7 @@
   <p>No pending online transfers.</p>
   <% } %>
 
-  <a href="<%= request.getContextPath() %>/views/dashboards/admin-dashboard.jsp">Back to Dashboard</a>
+  <a href="<%= request.getContextPath() %>/views/dashboards/operator-dashboard.jsp">Back to Dashboard</a>
 </div>
 <%@ include file="../dashboards/dashboard-footer.jsp" %>
 </body>

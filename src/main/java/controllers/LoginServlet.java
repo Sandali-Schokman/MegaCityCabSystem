@@ -48,7 +48,7 @@ public class LoginServlet extends HttpServlet {
                     response.sendRedirect(request.getContextPath() + "/views/dashboards/driver-dashboard.jsp");
                     break;
                 case "CUSTOMER":
-                    response.sendRedirect(request.getContextPath() + "/views/dashboards/customer-dashboard.jsp");
+                    response.sendRedirect(request.getContextPath() + "/views/home.jsp");
                     break;
                 default:
                     response.sendRedirect(request.getContextPath() + "/views/login.jsp?error=Invalid Role");

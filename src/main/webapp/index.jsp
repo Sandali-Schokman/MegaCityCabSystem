@@ -9,6 +9,7 @@
       document.getElementById("nav-links").classList.toggle("active");
     }
   </script>
+
 </head>
 <body>
 <header>
@@ -20,7 +21,7 @@
       <li><a href="views/login.jsp">Book a Ride</a></li>
       <li><a href="views/register.jsp">Sign up</a></li>
       <li><a href="#services">Our Services</a></li>
-      <li><a href="#">Contact</a></li>
+      <li><a href="#contact">Contact</a></li>
     </ul>
   </nav>
 </header>
@@ -48,7 +49,26 @@
     <p>Trained drivers and secure rides for your peace of mind.</p>
   </div>
 </section>
-
+<br>
+<br>
+<section>
+  <div id="contact">
+    <div class="contact-info">
+      <div class="info-box">
+        <h3>Office Address</h3>
+        <p>Mega City Cab (Pvt) Ltd.</p>
+        <p>No. 123, Galle Road, Colombo 03,</p>
+        <p>Sri Lanka</p>
+      </div>
+      <div class="info-box">
+        <h3>Contact Details</h3>
+        <p><strong>Phone:</strong> +94 11 234 5678</p>
+        <p><strong>Hotline:</strong> 0112 345 678</p>
+        <p><strong>Email:</strong> support@megacitycab.lk</p>
+      </div>
+    </div>
+  </div>
+</section>
 <footer>
   <p>&copy; 2024 Mega City Cab. All rights reserved.</p>
 </footer>

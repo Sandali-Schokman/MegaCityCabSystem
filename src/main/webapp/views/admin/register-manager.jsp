@@ -16,7 +16,7 @@
 <html>
 <head>
     <title>Register Manager</title>
-    <link rel="stylesheet" href="../../MegaCityCabSystem_war_exploded/assets/css/cabStyle.css">
+    <link rel="stylesheet" href="../../assets/css/cabStyle.css">
     <link rel="stylesheet" href="../../MegaCityCabSystem_war_exploded/assets/css/dashboard.css">
     <link rel="stylesheet" href="../../MegaCityCabSystem_war_exploded/assets/css/dashboard-header.css">
 </head>
@@ -34,24 +34,24 @@
 
     <form action="<%= request.getContextPath() %>/ManagerServlet"  method="POST" onsubmit="return validateForm()">
         <label>Username:</label>
-        <input type="text" name="username" required>
+        <input type="text" name="username" required><br>
 
         <label>Password:</label>
-        <input type="password" name="password" required>
+        <input type="password" name="password" required><br>
 
         <label>Email:</label>
-        <input type="email" name="email" required>
+        <input type="email" name="email" required><br>
 
         <label>Full Name:</label>
-        <input type="text" name="full_name" required>
+        <input type="text" name="full_name" required><br>
 
         <label>Phone:</label>
-        <input type="text" name="phone" required>
+        <input type="text" name="phone" required><br>
 
         <label>Address:</label>
-        <textarea name="address" required></textarea>
+        <textarea name="address" required></textarea><br>
 
-        <button type="submit">Register Manager</button>
+        <button type="submit">Register Manager</button><br>
     </form>
 
     <a href="<%= request.getContextPath() %>/views/admin/manage-managers.jsp">View Managers</a>

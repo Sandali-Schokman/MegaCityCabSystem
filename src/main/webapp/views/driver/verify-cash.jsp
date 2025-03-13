@@ -17,7 +17,9 @@
 <html>
 <head>
     <title>Verify Cash Payments</title>
-    <link rel="stylesheet" href="<%= request.getContextPath() %>/assets/css/dashboard.css">
+  <link rel="stylesheet" href="../../MegaCityCabSystem_war_exploded/assets/css/cabStyle.css">
+  <link rel="stylesheet" href="../../MegaCityCabSystem_war_exploded/assets/css/dashboard.css">
+  <link rel="stylesheet" href="../../MegaCityCabSystem_war_exploded/assets/css/dashboard-header.css">
 </head>
 <body>
 <jsp:include page="../dashboards/driver-dashboard.jsp"/>

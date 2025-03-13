@@ -27,4 +27,9 @@ public class PaymentService {
     public List<PaymentDTO> getPendingCashPaymentsForDriver(int driverId) {
         return paymentDAO.getPendingCashPaymentsForDriver(driverId);
     }
+
+    public List<PaymentDTO> getPendingBankTransfersForVerification() {
+        return paymentDAO.getPendingBankTransfersForVerification();
+    }
+
 }
