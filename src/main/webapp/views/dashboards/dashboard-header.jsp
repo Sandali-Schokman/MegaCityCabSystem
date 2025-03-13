@@ -16,13 +16,12 @@
 <body>
 <div class="navbar">
     <% if (role.equals("ADMIN")) { %>
-    <a href="admin-dashboard.jsp">Admin Panel</a>
+    <a href="../dashboards/admin-dashboard.jsp">Admin Panel</a>
     <% } else if (role.equals("MANAGER")) { %>
-    <a href="operator-dashboard.jsp">Operator Panel</a>
+    <a href="../dashboards/operator-dashboard.jsp">Manager Panel</a>
     <% } else if (role.equals("DRIVER")) { %>
-    <a href="driver-dashboard.jsp">Driver Panel</a>
+    <a href="../dashboards/driver-dashboard.jsp">Driver Panel</a>
     <% } else if (role.equals("CUSTOMER")) { %>
-    <a href="../home.jsp">Back</a>
     <% } %>
     <a href="<%= request.getContextPath()%>/logout">Logout</a>
 </div>

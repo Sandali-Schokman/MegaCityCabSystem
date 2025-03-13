@@ -41,7 +41,7 @@
         <a href="<%= request.getContextPath() %>/bookingTrends">Booking Trends Report</a>
         <a href="<%= request.getContextPath() %>/performanceReport">Driver Performance Report</a>
         <a href="<%= request.getContextPath() %>/complaints?action=view">Manage Complaints</a>
-        <a href="<%= request.getContextPath() %>/review">Driver Reviews & Ratings</a>
+        <a href="<%= request.getContextPath() %>/review?action=admin_view">Driver Reviews & Ratings</a>
     </div>
 </div>
 </body>

@@ -15,7 +15,9 @@
 <html>
 <head>
     <title>Driver Earnings</title>
-    <link rel="stylesheet" href="../../assets/css/dashboard.css">
+    <link rel="stylesheet" href="../../MegaCityCabSystem_war_exploded/assets/css/cabStyle.css">
+    <link rel="stylesheet" href="../../MegaCityCabSystem_war_exploded/assets/css/dashboard.css">
+    <link rel="stylesheet" href="../../MegaCityCabSystem_war_exploded/assets/css/dashboard-header.css">
 </head>
 <body>
 <%@ include file="../dashboards/driver-dashboard.jsp" %>

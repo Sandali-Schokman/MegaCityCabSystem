@@ -1,6 +1,5 @@
 package dto;
 
-import java.sql.Timestamp;
 
 public class EarningsDTO {
     private int driverId;

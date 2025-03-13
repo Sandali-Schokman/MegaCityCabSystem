@@ -67,7 +67,7 @@ public class PaymentDAO {
 
     public List<PaymentDTO> getPendingCashPaymentsForDriver(int driverId) {
         List<PaymentDTO> pendingPayments = new ArrayList<>();
-        String query = "SELECT p.* FROM payments p INNER JOIN bookings b ON p.booking_id = b.booking_id INNER JOIN users u ON u.user_id WHERE u.user_id = ? AND p.method = 'CASH' AND p.verified_by_driver = 'NO';";
+        String query = "SELECT p.* FROM payments p INNER JOIN bookings b ON p.booking_id = b.booking_id INNER JOIN drivers d ON d.driver_id WHERE d.user_id = ? AND p.method = 'CASH' AND p.verified_by_driver = 'NO';";
         System.out.println("Driver ID: " + driverId);
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
             stmt.setInt(1, driverId);

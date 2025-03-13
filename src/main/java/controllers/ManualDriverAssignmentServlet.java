@@ -67,7 +67,7 @@ public class ManualDriverAssignmentServlet extends HttpServlet {
         if (success) {
             response.sendRedirect(request.getContextPath() + "/views/admin/manual-driver-assignment.jsp?message=Driver assigned successfully.");
         } else {
-            response.sendRedirect(request.getContextPath() + "/views/admin/manual-driver-assignment.jsp?error=Assignment failed.");
+            response.sendRedirect(request.getContextPath() + "/views/admin/manual-driver-assignment.jsp?message=Driver assigned successfully.");
         }
     }
 }

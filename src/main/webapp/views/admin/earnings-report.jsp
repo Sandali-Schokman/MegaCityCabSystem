@@ -29,16 +29,12 @@
     <tr>
       <th>Driver ID</th>
       <th>Total Earnings (LKR)</th>
-      <th>Driver Share (LKR)</th>
-      <th>Company Share (LKR)</th>
       <th>Completed Rides</th>
     </tr>
     <% for (EarningsDTO earning : earningsReport) { %>
     <tr>
       <td><%= earning.getDriverId() %></td>
       <td>LKR <%= earning.getTotalEarnings() %></td>
-      <td>LKR <%= earning.getDriverEarnings() %></td>
-      <td>LKR <%= earning.getCompanyShare() %></td>
       <td><%= earning.getCompletedRides() %></td>
     </tr>
     <% } %>
@@ -48,7 +44,7 @@
   <% } %>
 
 
-  <a href="<%= request.getContextPath() %>/views/dashboards/admin-dashboard.jsp">Back to Dashboard</a>
+  <a href="<%= request.getContextPath() %>/views/dashboards/<%= "ADMIN".equals(role) ? "admin-dashboard.jsp" : "operator-dashboard.jsp" %>">Back to Dashboard</a>
 </div>
 <%@ include file="../dashboards/dashboard-footer.jsp" %>
 </body>

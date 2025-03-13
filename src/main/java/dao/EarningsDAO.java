@@ -27,8 +27,7 @@ public class EarningsDAO {
     // Retrieve Driver Earnings
     public EarningsDTO getDriverEarnings(int driverId) {
         double commissionRate = commissionDAO.getCommissionPercentage() / 100; // Convert to decimal
-        String query = "SELECT total_earnings, completed_rides FROM drivers WHERE driver_id = ?";
-
+        String query = "SELECT total_earnings, completed_rides FROM drivers WHERE user_id = ?";
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
             stmt.setInt(1, driverId);
             ResultSet rs = stmt.executeQuery();
@@ -84,7 +83,7 @@ public class EarningsDAO {
     // Get earnings for all drivers (for admin & manager)
     public List<EarningsDTO> getAllDriversEarnings() {
         List<EarningsDTO> earningsList = new ArrayList<>();
-        String query = "SELECT driver_id, total_earnings, driver_earnings, company_share, completed_rides, last_payment_date FROM drivers";
+        String query = "SELECT * FROM drivers";
 
         try (PreparedStatement stmt = connection.prepareStatement(query);
              ResultSet rs = stmt.executeQuery()) {
@@ -93,8 +92,8 @@ public class EarningsDAO {
                 earningsList.add(new EarningsDTO(
                         rs.getInt("driver_id"),
                         rs.getDouble("total_earnings"),
-                        rs.getDouble("driver_earnings"),
-                        rs.getDouble("company_share"),
+                        0,
+                        0,
                         rs.getInt("completed_rides")
                 ));
             }
