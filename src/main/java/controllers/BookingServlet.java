@@ -55,14 +55,7 @@ public class BookingServlet extends HttpServlet {
                 return;
             }
             double fare;
-//            try {
-//                fare = Double.parseDouble(fareStr);
-//            } catch (NumberFormatException e) {
-//                System.out.println("ERROR: Invalid fare number: " + e.getMessage());
-//                response.sendRedirect(request.getContextPath() + "/views/customer/book-ride.jsp?error=Invalid fare format.");
-//                return;
-//            }
-            // vw
+
             double fare2 = bookingService.calculateFare(pickupLocation, dropoffLocation, 12);
             System.out.println("DEBUG: Received Fare2 -booking servlet 79 " + fare2);
 
