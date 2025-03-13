@@ -32,9 +32,5 @@ public class HashUtil {
         }
         return password.toString();
     }
-    // Simulate password hashing (replace with real hashing if needed)
-//    public static String hashPassword(String password) {
-//        return "HASHED_" + password;  // Replace with real hashing method
-//    }
 
 }
