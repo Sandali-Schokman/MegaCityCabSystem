@@ -70,7 +70,7 @@ public class ReviewServlet extends HttpServlet {
         }
         else if(action.equals("admin_view")) {
             try {
-                List<ReviewDTO> reviews = reviewService.getDriverReviews(0); // If you want to display ALL reviews, pass 0 or use a separate method in ReviewDAO
+                List<ReviewDTO> reviews = reviewService.getDriverReviews(0);
                 request.setAttribute("reviews", reviews);
             } catch (Exception e) {
                 request.setAttribute("error", "/views/admin/driver-reviews.jsp?error=Invalid driver ID.");
@@ -85,7 +85,7 @@ public class ReviewServlet extends HttpServlet {
 
 
         try {
-        String driver = (request.getParameter("user_id"));//driver_id
+        String driver = (request.getParameter("user_id"));
         int driverId = Integer.parseInt(driver);
         List<ReviewDTO> reviews = reviewService.getDriverReviews(driverId);
         double avgRating = reviewService.getDriverAverageRating(driverId);

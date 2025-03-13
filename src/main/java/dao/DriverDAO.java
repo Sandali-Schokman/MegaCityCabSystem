@@ -51,7 +51,7 @@ public class DriverDAO {
         }
     }
 
-    // ✅ Register new driver with car details
+    // Register new driver with car details
     public boolean registerDriver(int userId, String carModel, String licensePlate) {
         String carQuery = "INSERT INTO cars (model, license_plate) VALUES (?, ?)";
         String driverQuery = "INSERT INTO drivers (user_id, car_id) VALUES (?, LAST_INSERT_ID())";
@@ -74,7 +74,7 @@ public class DriverDAO {
         return false;
     }
 
-    // ✅ Get driver details by user ID
+    // Get driver details by user ID
     public DriverDTO getDriverByUserId(int userId) {
         String query = "SELECT * FROM drivers WHERE user_id = ?";
 
@@ -99,7 +99,7 @@ public class DriverDAO {
         return null;
     }
 
-    // ✅ Fetch all drivers with their availability (for Admin & Manager tracking)
+    // Fetch all drivers with their availability (for Admin & Manager tracking)
     public List<DriverDTO> getAllDrivers() {
         List<DriverDTO> drivers = new ArrayList<>();
         String query = "SELECT * FROM drivers";
