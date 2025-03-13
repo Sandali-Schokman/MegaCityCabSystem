@@ -23,4 +23,6 @@ public class Driver {
 
     public void setAvailability(String availability) { this.availability = availability; }
     public void addEarnings(double amount) { this.totalEarnings += amount; }
+    public void setName(String testDriver) { this.driverId = Integer.parseInt(testDriver); }
+    public void setPhone(String number) { this.availability = number; }
 }

@@ -52,6 +52,10 @@ public class BookingDTO {
         this.paymentStatus = unpaid;
     }
 
+    public BookingDTO() {
+
+    }
+
     // Getters
     public int getBookingId() { return bookingId; }
     public int getCustomerId() { return customerId; }
@@ -66,4 +70,19 @@ public class BookingDTO {
     public Integer getAssignedByUser() { return assignedByUser; }
     public Timestamp getAssignedTime() { return assignedTime; }
     public Timestamp getCompletionTime() { return completionTime; }
+
+    public void setBookingId(int bookingId) { this.bookingId = bookingId; }
+    public void setCustomerId(int customerId) { this.customerId = customerId; }
+    public void setDriverId(int driverId) { this.driverId = driverId; }
+    public void setPickupLocation(String pickupLocation) { this.pickupLocation = pickupLocation; }
+    public void setDropoffLocation(String dropoffLocation) { this.dropoffLocation = dropoffLocation; }
+    public void setScheduledTime(Timestamp scheduledTime) { this.scheduledTime = scheduledTime; }
+    public void setBookingStatus(String bookingStatus) { this.bookingStatus = bookingStatus; }
+    public void setFare(double fare) { this.fare = fare; }
+    public void setPaymentStatus(String paymentStatus) { this.paymentStatus = paymentStatus; }
+    public void setAssignedBy(String assignedBy) { this.assignedBy = assignedBy; }
+    public void setAssignedTime(Timestamp assignedTime) { this.assignedTime = assignedTime; }
+    public void setCompletionTime(Timestamp completionTime) { this.completionTime = completionTime; }
+    public void setDistanceKm(double v) { this.fare = v / 1000; }
+    public void setStatus(String pending) { this.paymentStatus = pending; }
 }

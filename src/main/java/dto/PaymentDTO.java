@@ -41,4 +41,11 @@ public class PaymentDTO {
     public String getVerificationStatus() { return verificationStatus; }
     public double getDriverEarnings() { return driverEarnings; }
     public double getCompanyShare() { return companyShare; }
+    public void setPaymentId(int paymentId) { this.paymentId = paymentId; }
+    public void setBookingId(int bookingId) { this.bookingId = bookingId; }
+    public void setAmount(double amount) { this.amount = amount; }
+    public void setMethod(String method) { this.method = method; }
+    public void setPaymentStatus(String paymentStatus) { this.paymentStatus = paymentStatus; }
+    public void setPaymentDate(Timestamp paymentDate) { this.paymentDate = paymentDate; }
+
 }
