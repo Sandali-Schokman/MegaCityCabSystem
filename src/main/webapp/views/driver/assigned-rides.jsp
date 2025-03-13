@@ -15,7 +15,6 @@
 <html>
 <head>
     <title>Assigned Rides</title>
-    <title>Booking Trends Report</title>
     <link rel="stylesheet" href="../../MegaCityCabSystem_war_exploded/assets/css/cabStyle.css">
     <link rel="stylesheet" href="../../MegaCityCabSystem_war_exploded/assets/css/dashboard.css">
     <link rel="stylesheet" href="../../MegaCityCabSystem_war_exploded/assets/css/dashboard-header.css">
@@ -41,6 +40,7 @@
             <th>Pickup Location</th>
             <th>Drop-off Location</th>
             <th>Scheduled Time</th>
+            <th>Action</th>
         </tr>
         <% for (BookingDTO booking : assignedBookings) { %>
         <tr>
@@ -49,6 +49,12 @@
             <td><%= booking.getPickupLocation() %></td>
             <td><%= booking.getDropoffLocation() %></td>
             <td><%= booking.getScheduledTime() %></td>
+            <td>
+                <form action="<%= request.getContextPath() %>/endBooking" method="post" style="display:inline;">
+                    <input type="hidden" name="booking_id" value="<%= booking.getBookingId() %>">
+                    <button type="submit">End Booking</button>
+                </form>
+            </td>
         </tr>
         <% } %>
     </table>

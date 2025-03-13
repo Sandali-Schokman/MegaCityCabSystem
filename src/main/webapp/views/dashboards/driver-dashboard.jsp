@@ -43,10 +43,12 @@
         <a href="<%= request.getContextPath() %>/verifyCash">Verify Cash</a>
     </div>
 
+    <br>
+
     <%-- Availability Update Form --%>
     <div class="availability-form">
         <h2>Update Availability</h2>
-        <form action="<%= request.getContextPath() %>/updateAvailability" method="POST">
+        <form action="<%= request.getContextPath() %>/DriverAvailability" method="POST">
             <label for="status">Select Status:</label>
             <select name="status" id="status" required>
                 <option value="AVAILABLE">Available</option>

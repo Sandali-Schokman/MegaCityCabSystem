@@ -4,6 +4,8 @@ import config.DatabaseConnection;
 import dto.UserDTO;
 import models.User;
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class UserDAO {
     public boolean registerUser(User user) {
@@ -152,6 +154,85 @@ public class UserDAO {
         return -1;
     }
 
+    public boolean registerManager(User user) {
+        String query = "INSERT INTO users (username, password, email, full_name, phone, address, role, created_at) VALUES (?, ?, ?, ?, ?, ?, 'MANAGER', NOW())";
+
+        try (Connection conn = DatabaseConnection.getInstance().getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+
+            stmt.setString(1, user.getUsername());
+            stmt.setString(2, user.getPassword()); // Hash password before passing
+            stmt.setString(3, user.getEmail());
+            stmt.setString(4, user.getFullName());
+            stmt.setString(5, user.getPhone());
+            stmt.setString(6, user.getAddress());
+
+            return stmt.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    // Get All Managers
+    public List<UserDTO> getAllManagers() {
+        List<UserDTO> managers = new ArrayList<>();
+        String query = "SELECT * FROM users WHERE role = 'MANAGER'";
+
+        try (Connection conn = DatabaseConnection.getInstance().getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query);
+             ResultSet rs = stmt.executeQuery()) {
+
+            while (rs.next()) {
+                managers.add(new UserDTO(
+                        rs.getInt("user_id"),
+                        rs.getString("username"),
+                        rs.getString("password"),
+                        rs.getString("email"),
+                        rs.getString("full_name"),
+                        rs.getString("phone"),
+                        rs.getString("address"),
+                        rs.getString("role"),
+                        rs.getTimestamp("created_at")
+                ));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return managers;
+    }
+
+    public boolean deleteUserById(int userId) {
+        String checkRoleQuery = "SELECT role FROM users WHERE user_id = ?";
+        String deleteQuery = "DELETE FROM users WHERE user_id = ?";
+
+        try (Connection conn = DatabaseConnection.getInstance().getConnection()) {
+            // Check if the user is a MANAGER
+            try (PreparedStatement checkStmt = conn.prepareStatement(checkRoleQuery)) {
+                checkStmt.setInt(1, userId);
+                ResultSet rs = checkStmt.executeQuery();
+
+                if (rs.next()) {
+                    String role = rs.getString("role");
+                    if (!"MANAGER".equalsIgnoreCase(role)) {
+                        return false; // Prevent deletion if not MANAGER
+                    }
+                } else {
+                    return false; // No such user found
+                }
+            }
+
+            // Proceed to delete
+            try (PreparedStatement deleteStmt = conn.prepareStatement(deleteQuery)) {
+                deleteStmt.setInt(1, userId);
+                return deleteStmt.executeUpdate() > 0;
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 
 }
 

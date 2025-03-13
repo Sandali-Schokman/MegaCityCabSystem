@@ -13,9 +13,14 @@
     <meta charset="UTF-8">
     <title>Book a Ride</title>
     <link rel="stylesheet" href="../../assets/css/booking.css">
+    <link rel="stylesheet" href="../../assets/css/cabStyle.css">
+    <link rel="stylesheet" href="../../assets/css/dashboard.css">
+    <link rel="stylesheet" href="../../assets/css/dashboard-header.css">
 </head>
 <body>
-
+<div>
+<%@ include file="../dashboards/customer-dashboard.jsp" %>
+</div>
 <div class="container">
     <h2>Book a Ride</h2>
 
@@ -64,5 +69,6 @@
     // Preserve scheduled_time value if user goes back to the page
     document.getElementById('scheduled_time').value = new Date().toISOString().slice(0, 16);
 </script>
+<%@ include file="../dashboards/dashboard-footer.jsp" %>
 </body>
 </html>

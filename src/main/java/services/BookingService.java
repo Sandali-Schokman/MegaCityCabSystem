@@ -28,6 +28,10 @@ public class BookingService {
         return bookingDAO.getAllBookings();
     }
 
+    public List<BookingDTO> getCompletedBookings() {
+        return bookingDAO.getCompletedBookings();
+    }
+
     //Get bookings for a specific customer
     public List<BookingDTO> getBookingsByCustomer(int customerId) {
         return bookingDAO.getBookingsByCustomer(customerId);
@@ -73,6 +77,11 @@ public class BookingService {
             return distanceKm * farePerKm; // Calculate dynamically
         }
     }
+
+    public boolean endBookingByDriver(int bookingId, int driverId) {
+        return bookingDAO.endBookingByDriver(bookingId, driverId);
+    }
+
 
 }
 

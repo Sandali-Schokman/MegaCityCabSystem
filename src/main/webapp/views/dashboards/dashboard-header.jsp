@@ -22,10 +22,9 @@
     <% } else if (role.equals("DRIVER")) { %>
     <a href="driver-dashboard.jsp">Driver Panel</a>
     <% } else if (role.equals("CUSTOMER")) { %>
-    <a href="customer-dashboard.jsp">Customer Panel</a>
+    <a href="../home.jsp">Back</a>
     <% } %>
-    <a href="profile.jsp">Profile</a>
-    <a href="../../index.jsp">Logout</a>
+    <a href="<%= request.getContextPath()%>/logout">Logout</a>
 </div>
 
 </body>

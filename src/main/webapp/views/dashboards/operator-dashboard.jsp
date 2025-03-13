@@ -40,7 +40,7 @@
         <a href="<%= request.getContextPath() %>/verifyOnlineTransfer">Verify Online Transfers</a>
         <a href="<%= request.getContextPath() %>/bookingTrends">Booking Trends Report</a>
         <a href="<%= request.getContextPath() %>/performanceReport">Driver Performance Report</a>
-        <a href="<%= request.getContextPath() %>/complaints">Manage Complaints</a>
+        <a href="<%= request.getContextPath() %>/complaints?action=view">Manage Complaints</a>
         <a href="<%= request.getContextPath() %>/review">Driver Reviews & Ratings</a>
     </div>
 </div>

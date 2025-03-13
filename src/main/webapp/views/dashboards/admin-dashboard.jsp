@@ -31,7 +31,8 @@
     <p>Manage users, view reports, and oversee the system.</p>
 
     <div class="dashboard-options">
-        <a href="#">Manage Users</a>
+        <a href="<%= request.getContextPath()%>/views/admin/register-manager.jsp">Manage Users</a>
+        <a href="<%= request.getContextPath()%>/ManagerServlet">Manage Drivers</a>
         <a href="<%= request.getContextPath()%>/assignManualDriver">Assign Drivers</a>
         <a href="<%= request.getContextPath()%>/booking">Manage Bookings</a>
         <a href="<%= request.getContextPath() %>/DriverAvailability">Track Driver Availability</a>

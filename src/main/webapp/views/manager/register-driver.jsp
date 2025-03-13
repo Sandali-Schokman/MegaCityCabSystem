@@ -11,7 +11,7 @@
   <meta charset="UTF-8">
   <title>Register Driver</title>
   <link rel="stylesheet" href="../../MegaCityCabSystem_war_exploded/assets/css/register.css">
-  <link rel="stylesheet" href="../../MegaCityCabSystem_war_exploded/assets/css/cabStyle.css">
+  <link rel="stylesheet" href="../../assets/css/cabStyle.css">
   <link rel="stylesheet" href="../../MegaCityCabSystem_war_exploded/assets/css/dashboard.css">
   <link rel="stylesheet" href="../../MegaCityCabSystem_war_exploded/assets/css/dashboard-header.css">
 </head>
@@ -56,5 +56,6 @@
     <button type="submit">Register Driver</button>
   </form>
 </div>
+<%@ include file="../dashboards/dashboard-footer.jsp" %>
 </body>
 </html>

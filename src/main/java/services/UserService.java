@@ -2,9 +2,12 @@ package services;
 
 import dao.UserDAO;
 import dto.UserDTO;
+import mappers.UserMapper;
+import models.User;
 import utils.HashUtil;
 
 import java.sql.Timestamp;
+import java.util.List;
 import java.util.UUID;
 
 
@@ -48,4 +51,18 @@ public class UserService {
     public boolean isValidResetToken(String token){
         return userDAO.isValidResetToken(token);
     }
+
+    public boolean registerManager(UserDTO userDTO) {
+        User user = UserMapper.toEntity(userDTO);
+        return userDAO.registerManager(user);
+    }
+
+    public List<UserDTO> getAllManagers() {
+        return userDAO.getAllManagers();
+    }
+
+    public boolean deleteUserById(int userId) {
+        return userDAO.deleteUserById(userId);
+    }
+
 }

@@ -103,7 +103,6 @@ public class BookingServlet extends HttpServlet {
     }
 
 
-
     //Handle GET requests (View Bookings)
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession(false);
@@ -155,5 +154,6 @@ public class BookingServlet extends HttpServlet {
         } else {
             response.sendRedirect(request.getContextPath() + "/views/customer/bookings.jsp?error=Cancellation Failed.");
         }
+
     }
 }

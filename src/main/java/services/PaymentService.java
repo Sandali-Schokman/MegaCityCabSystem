@@ -3,6 +3,8 @@ package services;
 import dao.PaymentDAO;
 import dto.PaymentDTO;
 
+import java.util.List;
+
 public class PaymentService {
     private final PaymentDAO paymentDAO;
 
@@ -20,5 +22,9 @@ public class PaymentService {
 
     public boolean verifyOnlineTransfer(int paymentId, String status) {
         return paymentDAO.verifyOnlineTransfer(paymentId, status);
+    }
+
+    public List<PaymentDTO> getPendingCashPaymentsForDriver(int driverId) {
+        return paymentDAO.getPendingCashPaymentsForDriver(driverId);
     }
 }

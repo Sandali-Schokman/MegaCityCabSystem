@@ -39,9 +39,8 @@
 
     <div class="dashboard-options">
         <a href="<%= request.getContextPath() %>/views/customer/book-ride.jsp">Book a Ride</a>
-        <a href="<%= request.getContextPath() %>/bookings">My Bookings</a>
-        <a href="<%= request.getContextPath() %>/payment">Payments</a>
-        <a href="<%= request.getContextPath() %>/complaints">Complaints</a>
+        <a href="<%= request.getContextPath() %>/booking">My Bookings</a>
+        <a href="<%= request.getContextPath() %>/complaints?action=add">Complaints</a>
         <a href="<%= request.getContextPath() %>/views/customer/review.jsp">Review</a>
     </div>
 </div>

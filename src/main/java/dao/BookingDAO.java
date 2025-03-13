@@ -122,6 +122,22 @@ public class BookingDAO {
         return bookings;
     }
 
+    public List<BookingDTO> getCompletedBookings() {
+        List<BookingDTO> bookings = new ArrayList<>();
+        String query = "SELECT * FROM bookings WHERE booking_status = 'COMPLETED' ORDER BY scheduled_time ASC";
+
+        try (Connection conn = DatabaseConnection.getInstance().getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query);
+             ResultSet rs = stmt.executeQuery()) {
+
+            while (rs.next()) {
+                bookings.add(BookingMapper.toDTO(mapResultSetToBooking(rs)));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return bookings;
+    }
     //Update booking status
     public boolean updateBookingStatus(int bookingId, String newStatus) {
         String query = "UPDATE bookings SET booking_status = ? WHERE booking_id = ?";
@@ -271,6 +287,33 @@ public class BookingDAO {
         }
         return bookings;
     }
+
+    public boolean endBookingByDriver(int bookingId, int driverId) {
+        String updateBooking = "UPDATE bookings SET booking_status=?, completion_time=NOW() " +
+                "WHERE booking_id=?";
+        String updateDriverRides = "UPDATE drivers SET completed_rides = completed_rides + 1 WHERE driver_id=?";
+
+        try (Connection conn = DatabaseConnection.getInstance().getConnection();
+             PreparedStatement bookingStmt = conn.prepareStatement(updateBooking);
+             PreparedStatement driverStmt = conn.prepareStatement(updateDriverRides)) {
+
+            bookingStmt.setString(1,"COMPLETED");
+            bookingStmt.setInt(2, bookingId);
+
+
+            int updatedRows = bookingStmt.executeUpdate();
+            System.out.println("database"+updatedRows);
+            if (updatedRows > 0) {
+                driverStmt.setInt(1, driverId);
+                driverStmt.executeUpdate();
+                return true;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
 
 
 }
