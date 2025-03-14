@@ -19,6 +19,7 @@
     if ("MANAGER".equals(role)) {
         dashboardPage = "../dashboards/operator-dashboard.jsp"; // Change for Managers
     }
+
 %>
 
 <html>
@@ -58,7 +59,7 @@
             <td><%= booking.getDriverId() %></td>
             <td>
                 <% if ("PENDING".equals(booking.getBookingStatus())) { %>
-                <form action="<%= request.getContextPath() %>/cancelBooking" method="POST">
+                <form action="<%= request.getContextPath() %>/booking?action=cancel" method="POST">
                     <input type="hidden" name="booking_id" value="<%= booking.getBookingId() %>">
                     <button type="submit">Cancel</button>
                 </form>

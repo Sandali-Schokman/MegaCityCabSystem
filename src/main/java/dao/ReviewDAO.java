@@ -71,7 +71,8 @@ public class ReviewDAO {
     public double getAverageRating(int driverId) {
         String query = "SELECT AVG(rating) AS avg_rating FROM reviews WHERE driver_id = ?";
 
-        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+        try (Connection con = DatabaseConnection.getInstance().getConnection();
+                PreparedStatement stmt = con.prepareStatement(query)) {
             stmt.setInt(1, driverId);
             ResultSet rs = stmt.executeQuery();
 

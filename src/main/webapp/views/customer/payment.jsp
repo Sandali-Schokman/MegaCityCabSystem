@@ -43,6 +43,7 @@
     <form action="<%= request.getContextPath() %>/payment" method="post">
         <input type="hidden" name="booking_id" value="<%= bookingId %>">
         <input type="hidden" name="amount" value="<%= fare %>">
+        <input type="hidden" name="action" value="update">
 
         <label for="method">Select Payment Method:</label>
         <select name="method" id="method" required>

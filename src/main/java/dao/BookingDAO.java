@@ -87,7 +87,8 @@ public class BookingDAO {
     //Retrieve bookings for a specific customer
     public List<BookingDTO> getBookingsByCustomer(int customerId) {
         List<BookingDTO> bookings = new ArrayList<>();
-        String query = "SELECT * FROM bookings WHERE customer_id = ? ORDER BY scheduled_time DESC";
+        String query = "SELECT b.*, p.payment_status AS PS FROM bookings b JOIN payments p ON b.booking_id = p.booking_id  WHERE customer_id = ? ORDER BY scheduled_time DESC";
+        //SELECT p.* FROM payments p INNER JOIN bookings b ON p.booking_id = b.booking_id INNER JOIN drivers d ON d.driver_id WHERE d.user_id = ? AND p.method = 'CASH' AND p.verified_by_driver = 'NO';
 
         try (Connection conn = DatabaseConnection.getInstance().getConnection();
              PreparedStatement stmt = conn.prepareStatement(query)) {
@@ -96,7 +97,9 @@ public class BookingDAO {
             ResultSet rs = stmt.executeQuery();
 
             while (rs.next()) {
-                bookings.add(BookingMapper.toDTO(mapResultSetToBooking(rs)));
+                BookingDTO booking = BookingMapper.toDTO(mapResultSetToBooking(rs));
+                booking.setPaymentStatus(rs.getString("PS"));
+                bookings.add(booking);
             }
         } catch (SQLException e) {
             e.printStackTrace();

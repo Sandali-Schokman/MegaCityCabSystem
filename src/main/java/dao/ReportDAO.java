@@ -27,7 +27,8 @@ public class ReportDAO {
                 "SUM(CASE WHEN booking_status = 'CANCELLED' THEN 1 ELSE 0 END) AS cancelled " +
                 "FROM bookings GROUP BY DATE(scheduled_time) ORDER BY DATE(scheduled_time) DESC";
 
-        try (PreparedStatement stmt = connection.prepareStatement(query);
+        try (Connection con = DatabaseConnection.getInstance().getConnection();
+                PreparedStatement stmt = con.prepareStatement(query);
              ResultSet rs = stmt.executeQuery()) {
 
             while (rs.next()) {
@@ -51,7 +52,8 @@ public class ReportDAO {
                 "(SELECT AVG(rating) FROM reviews WHERE driver_id = d.driver_id) AS avg_rating " +
                 "FROM drivers d JOIN users u ON d.user_id = u.user_id ORDER BY d.completed_rides DESC";
 
-        try (PreparedStatement stmt = connection.prepareStatement(query);
+        try (Connection conn = DatabaseConnection.getInstance().getConnection();
+                PreparedStatement stmt = conn.prepareStatement(query);
              ResultSet rs = stmt.executeQuery()) {
 
             while (rs.next()) {

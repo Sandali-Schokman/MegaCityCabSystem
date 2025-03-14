@@ -41,10 +41,13 @@ public class PaymentDAO {
 
     // Update Payment Verification by Driver
     public boolean verifyCashPayment(int paymentId) {
-        String query = "UPDATE payments SET verified_by_driver = 'YES' WHERE payment_id = ?";
+        String query = "UPDATE payments SET verified_by_driver = 'YES', verification_status = ?,payment_status = ? WHERE payment_id = ?";
 
-        try (PreparedStatement stmt = connection.prepareStatement(query)) {
-            stmt.setInt(1, paymentId);
+        try (Connection con = DatabaseConnection.getInstance().getConnection();
+                PreparedStatement stmt = con.prepareStatement(query)) {
+            stmt.setString(1, "APPROVED");
+            stmt.setString(2, "PAID");
+            stmt.setInt(3, paymentId);
             return stmt.executeUpdate() > 0;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -54,11 +57,13 @@ public class PaymentDAO {
 
     // Update Online Transfer Verification by Admin/Manager
     public boolean verifyOnlineTransfer(int paymentId, String status) {
-        String query = "UPDATE payments SET verification_status = ? WHERE payment_id = ?";
+        String query = "UPDATE payments SET verification_status = ?, payment_status = ? WHERE payment_id = ?";
 
-        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+        try (Connection con = DatabaseConnection.getInstance().getConnection();
+                PreparedStatement stmt = con.prepareStatement(query)) {
             stmt.setString(1, status);
-            stmt.setInt(2, paymentId);
+            stmt.setString(2, "PAID");
+            stmt.setInt(3, paymentId);
             return stmt.executeUpdate() > 0;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -70,7 +75,8 @@ public class PaymentDAO {
         List<PaymentDTO> pendingPayments = new ArrayList<>();
         String query = "SELECT p.* FROM payments p INNER JOIN bookings b ON p.booking_id = b.booking_id INNER JOIN drivers d ON d.driver_id WHERE d.user_id = ? AND p.method = 'CASH' AND p.verified_by_driver = 'NO';";
         System.out.println("Driver ID: " + driverId);
-        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+        try (Connection con = DatabaseConnection.getInstance().getConnection();
+                PreparedStatement stmt = con.prepareStatement(query)) {
             stmt.setInt(1, driverId);
             ResultSet rs = stmt.executeQuery();
 
@@ -102,7 +108,8 @@ public class PaymentDAO {
         List<PaymentDTO> payments = new ArrayList<>();
         String query = "SELECT * FROM payments WHERE method = 'BANK_TRANSFER' AND verification_status = 'PENDING'";
 
-        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+        try (Connection con = DatabaseConnection.getInstance().getConnection();
+                PreparedStatement stmt = con.prepareStatement(query)) {
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
                 Payment payment = new Payment(

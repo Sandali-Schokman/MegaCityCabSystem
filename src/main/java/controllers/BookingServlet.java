@@ -26,66 +26,79 @@ public class BookingServlet extends HttpServlet {
     //Handle POST requests (Create Booking)
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession(false);
-
         //Session validation
-        if (session == null || session.getAttribute("role") == null || !"CUSTOMER".equals(session.getAttribute("role"))) {
+        if (session == null || session.getAttribute("role") == null ) {
             response.sendRedirect(request.getContextPath() + "/views/login.jsp?error=Unauthorized access.");
             return;
         }
 
-        try {
-            //Retrieve form parameters
-            int customerId = (Integer) session.getAttribute("user_id");
-            String pickupLocation = request.getParameter("pickup_location");
-            String dropoffLocation = request.getParameter("dropoff_location");
-
-            // Validate Scheduled Time
-            String scheduledTimeStr = request.getParameter("scheduled_time");
-            if (scheduledTimeStr == null || scheduledTimeStr.isEmpty()) {
-                response.sendRedirect(request.getContextPath() + "/views/customer/book-ride.jsp?error=Scheduled time is required.");
-                return;
-            }
-
-            // Validate Fare
-            String fareStr = request.getParameter("fare");
-            System.out.println("DEBUG: Received Fare - " + fareStr); // Debugging
-
-            if (fareStr == null || fareStr.isEmpty()) {
-                response.sendRedirect(request.getContextPath() + "/views/customer/book-ride.jsp?error=Fare is required.");
-                return;
-            }
-            double fare;
-
-            double fare2 = bookingService.calculateFare(pickupLocation, dropoffLocation, 12);
-            System.out.println("DEBUG: Received Fare2 -booking servlet 79 " + fare2);
-
-            Timestamp scheduledTime;
+        String action = request.getParameter("action");
+        if(action == null || action.equals("add")) {
             try {
-                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-                Date parsedDate = dateFormat.parse(scheduledTimeStr);
-                scheduledTime = new Timestamp(parsedDate.getTime());
-            } catch (ParseException e) {
-                System.out.println("ERROR: Could not parse scheduled time: " + e.getMessage());
-                response.sendRedirect(request.getContextPath() + "/views/customer/book-ride.jsp?error=Invalid date format. Use YYYY-MM-DD HH:MM.");
-                return;
+                //Retrieve form parameters
+                int customerId = (Integer) session.getAttribute("user_id");
+                String pickupLocation = request.getParameter("pickup_location");
+                String dropoffLocation = request.getParameter("dropoff_location");
+
+                // Validate Scheduled Time
+                String scheduledTimeStr = request.getParameter("scheduled_time");
+                if (scheduledTimeStr == null || scheduledTimeStr.isEmpty()) {
+                    response.sendRedirect(request.getContextPath() + "/views/customer/book-ride.jsp?error=Scheduled time is required.");
+                    return;
+                }
+
+                // Validate Fare
+                String fareStr = request.getParameter("fare");
+                System.out.println("DEBUG: Received Fare - " + fareStr); // Debugging
+
+                if (fareStr == null || fareStr.isEmpty()) {
+                    response.sendRedirect(request.getContextPath() + "/views/customer/book-ride.jsp?error=Fare is required.");
+                    return;
+                }
+                double fare;
+
+                double fare2 = bookingService.calculateFare(pickupLocation, dropoffLocation, 12);
+                System.out.println("DEBUG: Received Fare2 -booking servlet 79 " + fare2);
+
+                Timestamp scheduledTime;
+                try {
+                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                    Date parsedDate = dateFormat.parse(scheduledTimeStr);
+                    scheduledTime = new Timestamp(parsedDate.getTime());
+                } catch (ParseException e) {
+                    System.out.println("ERROR: Could not parse scheduled time: " + e.getMessage());
+                    response.sendRedirect(request.getContextPath() + "/views/customer/book-ride.jsp?error=Invalid date format. Use YYYY-MM-DD HH:MM.");
+                    return;
+                }
+
+                //Create Booking DTO (Driver ID is 0 initially, assigned later)
+                BookingDTO newBooking = new BookingDTO(0, customerId, 0, pickupLocation, dropoffLocation, scheduledTime, "PENDING", fare2 , "UNPAID");
+
+
+                // Call service method to save booking
+                boolean isBooked = bookingService.createBooking(newBooking);
+                if (isBooked) {
+                    response.sendRedirect(request.getContextPath() + "/views/customer/bookings.jsp?message=Booking Successful.");
+                } else {
+                    response.sendRedirect(request.getContextPath() + "/views/customer/book-ride.jsp?error=Booking Failed.");
+                }
+
+            } catch (Exception e) {
+                response.sendRedirect(request.getContextPath() + "/views/customer/book-ride.jsp?error=An unexpected error occurred.");
+                e.printStackTrace(); // Debugging purposes
             }
-
-            //Create Booking DTO (Driver ID is 0 initially, assigned later)
-            BookingDTO newBooking = new BookingDTO(0, customerId, 0, pickupLocation, dropoffLocation, scheduledTime, "PENDING", fare2 , "UNPAID");
-
-
-            // Call service method to save booking
-            boolean isBooked = bookingService.createBooking(newBooking);
-            if (isBooked) {
-                response.sendRedirect(request.getContextPath() + "/views/customer/bookings.jsp?message=Booking Successful.");
-            } else {
-                response.sendRedirect(request.getContextPath() + "/views/customer/book-ride.jsp?error=Booking Failed.");
-            }
-
-        } catch (Exception e) {
-            response.sendRedirect(request.getContextPath() + "/views/customer/book-ride.jsp?error=An unexpected error occurred.");
-            e.printStackTrace(); // Debugging purposes
         }
+        else if(action.equals("cancel")) {
+            int bookingId = Integer.parseInt(request.getParameter("booking_id"));
+            boolean isCancelled = bookingService.cancelBooking(bookingId);
+
+            if (isCancelled) {
+                response.sendRedirect(request.getContextPath() + "/booking?message=Booking Cancelled.");
+            } else {
+                response.sendRedirect(request.getContextPath() + "/booking?error=Cancellation Failed.");
+            }
+        }
+
     }
 
     //
@@ -131,22 +144,4 @@ public class BookingServlet extends HttpServlet {
         }
     }
 
-    //Handle DELETE (Cancel Booking)
-    protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        HttpSession session = request.getSession(false);
-        if (session == null || !"CUSTOMER".equals(session.getAttribute("role"))) {
-            response.sendRedirect(request.getContextPath() + "/views/login.jsp?error=Unauthorized access.");
-            return;
-        }
-
-        int bookingId = Integer.parseInt(request.getParameter("booking_id"));
-        boolean isCancelled = bookingService.cancelBooking(bookingId);
-
-        if (isCancelled) {
-            response.sendRedirect(request.getContextPath() + "/views/customer/bookings.jsp?message=Booking Cancelled.");
-        } else {
-            response.sendRedirect(request.getContextPath() + "/views/customer/bookings.jsp?error=Cancellation Failed.");
-        }
-
-    }
 }

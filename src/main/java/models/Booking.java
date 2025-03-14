@@ -55,6 +55,10 @@ public class Booking {
     public Timestamp getAssignedTime() { return assignedTime; }
     public Timestamp getCompletionTime() { return completionTime; }
 
+    public void setPaymentStatus(String paymentStatus) {
+        this.paymentStatus = paymentStatus;
+    }
+
     // Builder Class for Booking
     public static class BookingBuilder {
         private int bookingId;

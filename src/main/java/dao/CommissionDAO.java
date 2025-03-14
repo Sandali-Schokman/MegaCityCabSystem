@@ -25,7 +25,8 @@ public class CommissionDAO {
     // Retrieve the current commission percentage
     public double getCommissionPercentage() {
         String query = "SELECT commission_percentage FROM commission_settings LIMIT 1";
-        try (PreparedStatement stmt = connection.prepareStatement(query);
+        try (Connection con = DatabaseConnection.getInstance().getConnection();
+                PreparedStatement stmt = con.prepareStatement(query);
              ResultSet rs = stmt.executeQuery()) {
             if (rs.next()) {
                 return rs.getDouble("commission_percentage");
@@ -39,7 +40,8 @@ public class CommissionDAO {
     // Update the commission percentage (Admin updates)
     public boolean updateCommissionPercentage(double newCommission) {
         String query = "UPDATE commission_settings SET commission_percentage = ? WHERE id = 1";
-        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+        try (Connection con = DatabaseConnection.getInstance().getConnection();
+                PreparedStatement stmt = con.prepareStatement(query)) {
             stmt.setDouble(1, newCommission);
             return stmt.executeUpdate() > 0;
         } catch (SQLException e) {

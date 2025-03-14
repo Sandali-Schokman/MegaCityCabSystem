@@ -1,6 +1,7 @@
 package controllers;
 
 import dto.PaymentDTO;
+import services.BookingService;
 import services.PaymentService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -12,28 +13,36 @@ import java.io.IOException;
 @WebServlet("/payment")
 public class PaymentServlet extends HttpServlet {
     private final PaymentService paymentService = new PaymentService();
+    private BookingService bookingService = new BookingService();
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        try {
-            int bookingId = Integer.parseInt(request.getParameter("booking_id"));
-            double amount = Double.parseDouble(request.getParameter("amount"));
-            String method = request.getParameter("method");
+        String action = request.getParameter("action");
 
-            double commission = 10.00 / 100; // Get from commission_settings table later
-            double companyShare = amount * commission;
-            double driverEarnings = amount - companyShare;
+        if(action == null || action.equals("add")){
+            try {
+                int bookingId = Integer.parseInt(request.getParameter("booking_id"));
+                double amount = Double.parseDouble(request.getParameter("amount"));
+                String method = request.getParameter("method");
 
-            PaymentDTO payment = new PaymentDTO(0, bookingId, amount, method, "PENDING", null, "YES".equalsIgnoreCase(method) ? "YES" : "NO", "PENDING", driverEarnings, companyShare);
-            boolean success = paymentService.createPayment(payment);
+                double commission = 10.00 / 100; // Get from commission_settings table later
+                double companyShare = amount * commission;
+                double driverEarnings = amount - companyShare;
 
-            if (success) {
-                response.sendRedirect(request.getContextPath() + "/booking?message=Payment Success.");
-            } else {
+                PaymentDTO payment = new PaymentDTO(0, bookingId, amount, method, "PENDING", null, "YES".equalsIgnoreCase(method) ? "YES" : "NO", "PENDING", driverEarnings, companyShare);
+                boolean success = paymentService.createPayment(payment);
 
-                response.sendRedirect(request.getContextPath() + "/views/customer/payment.jsp?error=Payment Failed.&booking_id=" + bookingId + "&fare="+amount);
+                if (success) {
+                    response.sendRedirect(request.getContextPath() + "/booking?message=Payment Success.");
+                } else {
+
+                    response.sendRedirect(request.getContextPath() + "/views/customer/payment.jsp?error=Payment Failed.&booking_id=" + bookingId + "&fare="+amount);
+                }
+            } catch (NumberFormatException e) {
+                response.sendRedirect(request.getContextPath() + "/views/customer/payment.jsp?error=Invalid input.");
             }
-        } catch (NumberFormatException e) {
-            response.sendRedirect(request.getContextPath() + "/views/customer/payment.jsp?error=Invalid input.");
+        }
+        else if(action.equals("update")){
+            response.sendRedirect(request.getContextPath() + "/booking?message=Payment Success.");
         }
     }
 

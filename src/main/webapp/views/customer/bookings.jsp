@@ -36,7 +36,6 @@
       <th>Fare ($)</th>
       <th>Payment Status</th>
       <th>Action</th>
-      <th>Action</th>
     </tr>
     <% for (BookingDTO booking : bookings) { %>
     <tr>
@@ -53,13 +52,6 @@
           <input type="hidden" name="fare" value='<%=booking.getFare()%>'>
 
           <input type="submit" value="Pay">
-        </form>
-      </td>
-      <td>
-        <form action="<%= request.getContextPath()%>/views/customer/review.jsp" method="post">
-          <input type="hidden" name="booking_id" value='<%=booking.getBookingId()%>'>
-          <input type="hidden" name="driver_id" value='<%=booking.getDriverId()%>'>
-          <input type="submit" value="review">
         </form>
       </td>
     </tr>

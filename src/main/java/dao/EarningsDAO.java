@@ -28,7 +28,8 @@ public class EarningsDAO {
     public EarningsDTO getDriverEarnings(int driverId) {
         double commissionRate = commissionDAO.getCommissionPercentage() / 100; // Convert to decimal
         String query = "SELECT total_earnings, completed_rides FROM drivers WHERE user_id = ?";
-        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+        try (Connection conn = DatabaseConnection.getInstance().getConnection();
+                PreparedStatement stmt = conn.prepareStatement(query)) {
             stmt.setInt(1, driverId);
             ResultSet rs = stmt.executeQuery();
 
@@ -57,8 +58,9 @@ public class EarningsDAO {
         String query = "UPDATE drivers SET total_earnings = total_earnings + ?, completed_rides = completed_rides + 1 WHERE driver_id = ?";
         String paymentQuery = "INSERT INTO payments (booking_id, amount, driver_earnings, company_share, payment_status) VALUES (?, ?, ?, ?, 'CONFIRMED')";
 
-        try (PreparedStatement stmt = connection.prepareStatement(query);
-             PreparedStatement paymentStmt = connection.prepareStatement(paymentQuery)) {
+        try (Connection conn = DatabaseConnection.getInstance().getConnection();
+                PreparedStatement stmt = conn.prepareStatement(query);
+             PreparedStatement paymentStmt = conn.prepareStatement(paymentQuery)) {
 
             // Update driver earnings
             stmt.setDouble(1, fare);
@@ -85,7 +87,8 @@ public class EarningsDAO {
         List<EarningsDTO> earningsList = new ArrayList<>();
         String query = "SELECT * FROM drivers";
 
-        try (PreparedStatement stmt = connection.prepareStatement(query);
+        try (Connection con = DatabaseConnection.getInstance().getConnection();
+                PreparedStatement stmt = con.prepareStatement(query);
              ResultSet rs = stmt.executeQuery()) {
 
             while (rs.next()) {
