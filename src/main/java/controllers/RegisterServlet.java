@@ -33,7 +33,7 @@ public class RegisterServlet extends HttpServlet {
 
         UserDAO userDAO = new UserDAO();
         if (userDAO.registerUser(user)) {
-            response.sendRedirect(request.getContextPath() + "/views/login.jsp?error");
+            response.sendRedirect(request.getContextPath() + "/views/login.jsp?massage=Account+created+successfully");
         } else {
             request.setAttribute("error", "Registration failed. Try again!");
             request.getRequestDispatcher("webapp/views/register.jsp").forward(request, response);

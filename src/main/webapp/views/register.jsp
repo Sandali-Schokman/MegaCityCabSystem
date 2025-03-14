@@ -16,7 +16,7 @@
 </head>
 <body>
 <div class="container">
-    <form action="register" method="post" class="register-form" onsubmit="return validateForm()">
+    <form action="<%= request.getContextPath()%>/register" method="post" class="register-form" onsubmit="return validateForm()">
         <h2>Sign Up</h2>
 
         <div class="input-group">

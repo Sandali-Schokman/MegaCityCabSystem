@@ -29,12 +29,14 @@ public class VerifyOnlineTransferServlet extends HttpServlet {
 
             boolean updated = paymentService.verifyOnlineTransfer(paymentId, status);
 
-            String role = (String) session.getAttribute("role");
-            String redirectPage = "ADMIN".equals(session.getAttribute("role"))
-                    ? "/verifyOnlineTransfer?message=Updated"
-                    : "/verifyOnlineTransfer?message=Updated";
+            if(updated) {
+                response.sendRedirect( request.getContextPath() +"/verifyOnlineTransfer");
+            }
+            else{
+                response.sendRedirect(request.getContextPath() + "/verifyOnlineTransfer?error=Invalid input");
+            }
 
-            response.sendRedirect(request.getContextPath() + "/views/manager/verify-transfers.jsp");
+
 
         } catch (NumberFormatException e) {
             response.sendRedirect(request.getContextPath() + "/verifyOnlineTransfer?error=Invalid input");

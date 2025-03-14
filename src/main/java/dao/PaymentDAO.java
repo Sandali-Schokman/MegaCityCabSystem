@@ -23,7 +23,8 @@ public class PaymentDAO {
     public boolean createPayment(PaymentDTO payment) {
         String query = "INSERT INTO payments (booking_id, amount, method, payment_status, driver_earnings, company_share) VALUES (?, ?, ?, ?, ?, ?)";
 
-        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+        try (Connection con = DatabaseConnection.getInstance().getConnection();
+                PreparedStatement stmt = con.prepareStatement(query)) {
             stmt.setInt(1, payment.getBookingId());
             stmt.setDouble(2, payment.getAmount());
             stmt.setString(3, payment.getMethod());
